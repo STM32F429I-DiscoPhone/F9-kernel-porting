@@ -99,8 +99,6 @@ void __USER_TEXT __root_thread(kip_t *kip_ptr, utcb_t *utcb_ptr)
 		free_mem += STACK_SIZE;
 		stack = (L4_Word_t)free_mem;
 
-                L4_Map(tid, (memptr_t)AHB1_1DEV, 0x3c00);
-
 		/* map fpages */
 		while (fpage->base || fpage->size) {
 			if (fpage->base) {

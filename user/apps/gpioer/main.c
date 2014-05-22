@@ -48,6 +48,7 @@ static void __USER_TEXT start_thread(L4_ThreadId_t t, L4_Word_t ip,
 }
 
 #define STACK_SIZE 256
+
 static L4_ThreadId_t __USER_TEXT create_thread(user_struct *user, void (*func)(void))
 {
 	L4_ThreadId_t myself = L4_MyGlobalId();
@@ -63,9 +64,13 @@ static L4_ThreadId_t __USER_TEXT create_thread(user_struct *user, void (*func)(v
 	return child;
 }
 
-
 static void __USER_TEXT main(user_struct *user)
 {
+    L4_Sleep(L4_TimePeriod(1000 * 1000));
+    printf("0x40020000: 0x%x\n", *(unsigned int *)0x40020000);
+    L4_Sleep(L4_TimePeriod(1000 * 1000));
+    printf("0x40021500: 0x%x\n", *(unsigned int *)0x40021500);
+
     free_mem = user->fpages[0].base;
 
     create_thread(user, gpioer_thread);
@@ -76,4 +81,5 @@ DECLARE_USER(
 	gpioer,
 	main,
 	DECLARE_FPAGE(0x0, 2 * UTCB_SIZE + 2 * STACK_SIZE)
+	DECLARE_FPAGE(0x40020000, 0x3c00)
 );
