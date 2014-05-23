@@ -5,4 +5,3 @@
 user-lib-dirs = \
 	l4 \
 	io \
-	common \
