@@ -128,8 +128,7 @@ void __USER_TEXT RCC_AHB1PeriphClockCmd(uint32_t rcc_AHB1, uint8_t enable)
 {
 	//TODO: assertion
 
-	if (enable != 0)
-	{
+	if (enable != 0) {
 		*RCC_AHB1ENR |= rcc_AHB1;
 	} else {
 		*RCC_AHB1ENR &= ~rcc_AHB1;
@@ -140,10 +139,21 @@ void __USER_TEXT RCC_APB2PeriphClockCmd(uint32_t rcc_APB2, uint8_t enable)
 {
 	//TODO: assertion
 
-	if (enable != 0)
-	{
+	if (enable != 0) {
 		*RCC_APB2ENR |= rcc_APB2;
 	} else {
 		*RCC_APB2ENR &= ~rcc_APB2;
 	}
 }
+
+void RCC_APB2PeriphResetCmd(uint32_t rcc_APB2, uint8_t enable)
+{
+	//TODO: assertion
+
+	if (enable != 0) {
+		*RCC_APB2RSTR |= rcc_APB2;
+	} else {
+		*RCC_APB2RSTR &= ~rcc_APB2;
+	}
+}
+

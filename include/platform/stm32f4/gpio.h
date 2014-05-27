@@ -53,6 +53,7 @@ struct gpio_cfg {
 #define     af_i2c3             AF4
 #define     af_spi1             AF5
 #define     af_spi2             AF5
+#define     af_spi5             AF5
 #define     af_spi3             AF6
 #define     af_usart1           AF7
 #define     af_usart2           AF7
@@ -79,5 +80,6 @@ void gpio_config_input(uint8_t port, uint8_t pin, uint8_t pupd);
 void gpio_out_high(uint8_t port, uint8_t pin);
 void gpio_out_low(uint8_t port, uint8_t pin);
 uint8_t gpio_input_bit(uint8_t port, uint8_t pin);
+void gpio_writebit(uint8_t port, uint8_t pin, uint8_t bitval);
 
 #endif /* PLATFORM_STM32F4_GPIO_H_ */

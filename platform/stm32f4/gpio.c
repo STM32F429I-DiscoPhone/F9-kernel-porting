@@ -150,3 +150,12 @@ uint8_t __USER_TEXT gpio_input_bit(uint8_t port, uint8_t pin)
 
 	return 0;
 }
+
+void gpio_writebit(uint8_t port, uint8_t pin, uint8_t bitval)
+{
+	if (bitval != 0) {
+		*GPIO_BSRR(port) = GPIO_BSRR_BS(pin);
+	} else {
+		*GPIO_BSRR(port) = GPIO_BSRR_BR(pin);
+	}
+}
