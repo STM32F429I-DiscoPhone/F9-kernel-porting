@@ -9,19 +9,20 @@
 #include <l4/ipc.h>
 #include <l4io.h>
 #include <platform/stm32f4/gpio.h>
-
+#include <platform/stm32f4/rcc.h>
 #define STACK_SIZE 256
 
 static void __USER_TEXT main(user_struct *user)
 {
     int flag = 0;
-	*RCC_AHB1ENR &= ~RCC_AHB1ENR_GPIOAEN;
+	RCC_AHB1PeriphClockCmd(RCC_AHB1ENR_GPIOAEN, 1);
 	gpio_config_input(GPIOA, 0, GPIO_PUPDR_NONE);
     gpio_config_output(GPIOG, 13, GPIO_PUPDR_UP, GPIO_OSPEEDR_50M);
     gpio_config_output(GPIOG, 14, GPIO_PUPDR_UP, GPIO_OSPEEDR_50M);
 
     while(1) {
 		flag = gpio_input_bit(GPIOA, 0);
+
         if(flag) {
             gpio_out_high(GPIOG, 13);
             gpio_out_low(GPIOG, 14);
@@ -30,8 +31,8 @@ static void __USER_TEXT main(user_struct *user)
             gpio_out_high(GPIOG, 14);
             gpio_out_low(GPIOG, 13);
         }
-
-        //L4_Sleep(L4_TimePeriod(1000 * 100));
+		
+        L4_Sleep(L4_TimePeriod(1000 * 100));
     }
 }
 
