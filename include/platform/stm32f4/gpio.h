@@ -70,8 +70,10 @@ struct gpio_cfg {
 #define     af_otg_hs           AF10
 #define     af_eth              AF11
 #define     af_fsmc             AF12
+#define     af_fmc              AF12
 #define     af_sdio             AF12
 #define     af_dcmi             AF13
+#define     af_ltdc             AF14
 #define     af_eventout         AF15
 
 void gpio_config(struct gpio_cfg *cfg);
@@ -80,6 +82,7 @@ void gpio_config_input(uint8_t port, uint8_t pin, uint8_t pupd);
 void gpio_out_high(uint8_t port, uint8_t pin);
 void gpio_out_low(uint8_t port, uint8_t pin);
 uint8_t gpio_input_bit(uint8_t port, uint8_t pin);
+void gpio_pinaf_config(uint8_t port, uint8_t pin, uint8_t func);
 void gpio_writebit(uint8_t port, uint8_t pin, uint8_t bitval);
 
 #endif /* PLATFORM_STM32F4_GPIO_H_ */

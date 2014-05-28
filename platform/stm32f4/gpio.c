@@ -64,6 +64,11 @@ inline static void gpio_afr(uint8_t port, uint8_t pin, uint8_t func)
 	}
 }
 
+void gpio_pinaf_config(uint8_t port, uint8_t pin, uint8_t func)
+{
+	gpio_afr(port,pin,func);
+}
+
 void __USER_TEXT gpio_config(struct gpio_cfg *cfg)
 {
 	uint8_t port, pin, cfg_data;
