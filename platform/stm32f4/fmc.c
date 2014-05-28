@@ -54,3 +54,45 @@ void fmc_sdram_init(struct fmc_sdram_cfg *cfg)
 	}
 
 }
+
+uint8_t fmc_get_flag(uint32_t bank, uint32_t flag)
+{
+	uint8_t bitstatus = 0;
+	uint32_t tmpsr = 0x00000000;
+
+	//TODO: assertion
+
+	if (bank == 999) {
+		//TODO: bank2_nand, bank3_nand, bank4_pccard
+	} else {
+		tmpsr = *FMC_Bank5_6_SDSR;
+	}
+
+	if ((tmpsr & flag) != flag) {
+		bitstatus = 0;
+	} else {
+		bitstatus = 1;
+	}
+
+	return bitstatus;
+}
+
+void fmc_sdram_cmd_init(struct fmc_sdram_cmd *cmd)
+{
+	uint32_t tmpr = 0x0;
+
+	//TODO: assertion
+
+	tmpr = (uint32_t) (cmd->mode | cmd->target |
+	       (((cmd->auto_refresh_number)-1)<<5) |
+		   ((cmd->mode_register_definition)<<9));
+
+	*FMC_Bank5_6_SDCMR = tmpr;
+}
+
+void fmc_set_refresh_count(uint32_t count)
+{
+	//TODO: assertion
+
+	*FMC_Bank5_6_SDRTR |= (count << 1);
+}
