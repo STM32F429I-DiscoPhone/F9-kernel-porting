@@ -20,7 +20,7 @@
 #define AHB1PERIPH_BASE                 (PERIPH_BASE + 0x00020000)
 #define AHB2PERIPH_BASE                 (PERIPH_BASE + 0x10000000)
 
-
+#define PERIPH_BB_BASE                  (uint32_t) (0x42000000)                                 /* Peripheral base address in bit-band region */
 
 /* APB1 peripherals */
 #define TIM2_BASE             (APB1PERIPH_BASE + 0x0000)
@@ -68,6 +68,7 @@
 #define TIM10_BASE            (APB2PERIPH_BASE + 0x4400)
 #define TIM11_BASE            (APB2PERIPH_BASE + 0x4800)
 #define SPI5_BASE             (APB2PERIPH_BASE + 0x5000)
+#define LTDC_BASE             (APB2PERIPH_BASE + 0x6800)
 
 /* AHB */
 #define GPIO_BASE(port)                 (AHB1PERIPH_BASE + (0x400*port))                        /* GPIO Port base address */
@@ -178,6 +179,10 @@
 #define RCC_AHB3ENR                     (volatile uint32_t *) (RCC_BASE + 0x38)                 /* AHB3 Enable Register */
 #define RCC_APB1ENR                     (volatile uint32_t *) (RCC_BASE + 0x40)                 /* APB1 Peripheral Clock Enable Register */
 #define RCC_APB2ENR                     (volatile uint32_t *) (RCC_BASE + 0x44)                 /* APB2 Peripheral Clock Enable Register */
+#define RCC_BDCR                        (volatile uint32_t *) (RCC_BASE + 0x70)                 /* RCC Backup Domain Control Register */
+#define RCC_CSR                         (volatile uint32_t *) (RCC_BASE + 0x74)                 /* RCC Clock Control & Status Register */
+#define RCC_PLLSAICFGR                  (volatile uint32_t *) (RCC_BASE + 0x88)                 /* RCC PLLSAI Configuration register */
+#define RCC_DCKCFGR                     (volatile uint32_t *) (RCC_BASE + 0x8C)                 /* RCC Dedicated Clocks Configuration register */
 
 /* SYSCFG */
 #define SYSCFG_MEMRMP					(volatile uint32_t *)(SYSCFG_BASE + 0x0)				/* Memory remap register */
@@ -1040,5 +1045,93 @@
 #define FMC_Bank5_6_SDCMR               (volatile uint32_t *) (FMC_Bank5_6_R_BASE + 0x150)      /* SDRAM Command Mode Register */
 #define FMC_Bank5_6_SDRTR               (volatile uint32_t *) (FMC_Bank5_6_R_BASE + 0x154)      /* SDRAM Refresh Timer Register */
 #define FMC_Bank5_6_SDSR                (volatile uint32_t *) (FMC_Bank5_6_R_BASE + 0x158)      /* SDRAM Status Register */
+
+/* RCC_PLL_Clock definition */
+#define RCC_PLLSAIDivR_Div2             ((uint32_t)0x00000000)
+#define RCC_PLLSAIDivR_Div4             ((uint32_t)0x00010000)
+#define RCC_PLLSAIDivR_Div8             ((uint32_t)0x00020000)
+#define RCC_PLLSAIDivR_Div16            ((uint32_t)0x00030000)
+
+/* RCC_DCKCFGR definition */
+#define  RCC_DCKCFGR_PLLI2SDIVQ         ((uint32_t)0x0000001F)
+#define  RCC_DCKCFGR_PLLSAIDIVQ         ((uint32_t)0x00001F00)
+#define  RCC_DCKCFGR_PLLSAIDIVR         ((uint32_t)0x00030000)
+#define  RCC_DCKCFGR_SAI1ASRC           ((uint32_t)0x00300000)
+#define  RCC_DCKCFGR_SAI1BSRC           ((uint32_t)0x00C00000)
+#define  RCC_DCKCFGR_TIMPRE             ((uint32_t)0x01000000)
+
+/* LTDC definition */
+#define LTDC_Layer1_BASE                (LTDC_BASE + 0x84)
+#define LTDC_Layer2_BASE                (LTDC_BASE + 0x104)
+
+#define LTDC_SSCR                       (volatile uint32_t *) (LTDC_BASE + 0x08)                /* LTDC Synchronization Size Configuration Register */
+#define LTDC_BPCR                       (volatile uint32_t *) (LTDC_BASE + 0x0C)                /* LTDC Back Porch Configuration Register */
+#define LTDC_AWCR                       (volatile uint32_t *) (LTDC_BASE + 0x10)                /* LTDC Active Width Configuration Register */
+#define LTDC_TWCR                       (volatile uint32_t *) (LTDC_BASE + 0x14)                /* LTDC Total Width Configuration Register */
+#define LTDC_GCR                        (volatile uint32_t *) (LTDC_BASE + 0x18)                /* LTDC Global Control Register */
+#define LTDC_SRCR                       (volatile uint32_t *) (LTDC_BASE + 0x24)                /* LTDC Shadow Reload Configuration Register */
+#define LTDC_BCCR                       (volatile uint32_t *) (LTDC_BASE + 0x2C)                /* LTDC Background Color Configuration Register */
+#define LTDC_IER                        (volatile uint32_t *) (LTDC_BASE + 0x34)                /* LTDC Interrupt Enable Register */
+#define LTDC_ISR                        (volatile uint32_t *) (LTDC_BASE + 0x38)                /* LTDC Interrupt Status Register */
+#define LTDC_ICR                        (volatile uint32_t *) (LTDC_BASE + 0x3C)                /* LTDC Interrupt Clear Register */
+#define LTDC_LIPCR                      (volatile uint32_t *) (LTDC_BASE + 0x40)                /* LTDC Line Interrupt Position Configuration Register */
+#define LTDC_CPSR                       (volatile uint32_t *) (LTDC_BASE + 0x44)                /* LTDC Current Position Status Register */
+#define LTDC_CDSR                       (volatile uint32_t *) (LTDC_BASE + 0x48)                /* LTDC Current Display Status Register */
+
+#define LTDC_SSCR_VSH                   ((uint32_t)0x000007FF)                                  /* Vertical Synchronization Height */
+#define LTDC_SSCR_HSW                   ((uint32_t)0x0FFF0000)                                  /* Horizontal Synchronization Width */
+
+#define LTDC_BPCR_AVBP                  ((uint32_t)0x000007FF)                                  /* Accumulated Vertical Back Porch */
+#define LTDC_BPCR_AHBP                  ((uint32_t)0x0FFF0000)                                  /* Accumulated Horizontal Back Porch */
+
+#define LTDC_AWCR_AAH                   ((uint32_t)0x000007FF)                                  /* Accumulated Active heigh */
+#define LTDC_AWCR_AAW                   ((uint32_t)0x0FFF0000)                                  /* Accumulated Active Width */
+
+#define LTDC_TWCR_TOTALH                ((uint32_t)0x000007FF)                                  /* Total Heigh */
+#define LTDC_TWCR_TOTALW                ((uint32_t)0x0FFF0000)                                  /* Total Width */
+
+#define LTDC_GCR_LTDCEN                 ((uint32_t)0x00000001)                                  /* LCD-TFT controller enable bit */
+#define LTDC_GCR_DBW                    ((uint32_t)0x00000070)                                  /* Dither Blue Width */
+#define LTDC_GCR_DGW                    ((uint32_t)0x00000700)                                  /* Dither Green Width */
+#define LTDC_GCR_DRW                    ((uint32_t)0x00007000)                                  /* Dither Red Width */
+#define LTDC_GCR_DTEN                   ((uint32_t)0x00010000)                                  /* Dither Enable */
+#define LTDC_GCR_PCPOL                  ((uint32_t)0x10000000)                                  /* Pixel Clock Polarity */
+#define LTDC_GCR_DEPOL                  ((uint32_t)0x20000000)                                  /* Data Enable Polarity */
+#define LTDC_GCR_VSPOL                  ((uint32_t)0x40000000)                                  /* Vertical Synchronization Polarity */
+#define LTDC_GCR_HSPOL                  ((uint32_t)0x80000000)                                  /* Horizontal Synchronization Polarity */
+
+#define LTDC_SRCR_IMR                   ((uint32_t) 1 << 0)                                     /* Immediate Reload */
+#define LTDC_SRCR_VBR                   ((uint32_t) 1 << 1)                                     /* Vertical Blanking Reload */
+
+#define LTDC_BCCR_BCBLUE                ((uint32_t)0x000000FF)                                  /* Background Blue value */
+#define LTDC_BCCR_BCGREEN               ((uint32_t)0x0000FF00)                                  /* Background Green value */
+#define LTDC_BCCR_BCRED                 ((uint32_t)0x00FF0000)                                  /* Background Red value */
+
+#define LTDC_IER_LIE                    ((uint32_t) 1 << 0)                                    /* Line Interrupt Enable */
+#define LTDC_IER_FUIE                   ((uint32_t) 1 << 1)                                    /* FIFO Underrun Interrupt Enable */
+#define LTDC_IER_TERRIE                 ((uint32_t) 1 << 2)                                    /* Transfer Error Interrupt Enable */
+#define LTDC_IER_RRIE                   ((uint32_t) 1 << 3)                                    /* Register Reload interrupt enable */
+
+#define LTDC_ISR_LIF                    ((uint32_t) 1 << 0)                                    /* Line Interrupt Flag */
+#define LTDC_ISR_FUIF                   ((uint32_t) 1 << 1)                                    /* FIFO Underrun Interrupt Flag */
+#define LTDC_ISR_TERRIF                 ((uint32_t) 1 << 2)                                    /* Transfer Error Interrupt Flag */
+#define LTDC_ISR_RRIF                   ((uint32_t) 1 << 3)                                    /* Register Reload interrupt Flag */
+
+#define LTDC_ICR_CLIF                   ((uint32_t) 1 << 0)                                    /* Clears the Line Interrupt Flag */
+#define LTDC_ICR_CFUIF                  ((uint32_t) 1 << 1)                                    /* Clears the FIFO Underrun Interrupt Flag */
+#define LTDC_ICR_CTERRIF                ((uint32_t) 1 << 2)                                    /* Clears the Transfer Error Interrupt Flag */
+#define LTDC_ICR_CRRIF                  ((uint32_t) 1 << 3)                                    /* Clears Register Reload interrupt Flag */
+
+#define LTDC_LIPCR_LIPOS                ((uint32_t)0x000007FF)                                 /* Line Interrupt Position */
+
+#define LTDC_CPSR_CYPOS                 ((uint32_t)0x0000FFFF)                                 /* Current Y Position */
+#define LTDC_CPSR_CXPOS                 ((uint32_t)0xFFFF0000)                                 /* Current X Position */
+
+#define LTDC_CDSR_VDES                  ((uint32_t) 1 << 0)                                    /* Vertical Data Enable Status */
+#define LTDC_CDSR_HDES                  ((uint32_t) 1 << 1)                                    /* Horizontal Data Enable Status */
+#define LTDC_CDSR_VSYNCS                ((uint32_t) 1 << 2)                                    /* Vertical Synchronization Status */
+#define LTDC_CDSR_HSYNCS                ((uint32_t) 1 << 3)                                    /* Horizontal Synchronization Status */
+
+
 
 #endif

@@ -16,6 +16,16 @@
 #define PLL_Q	7	/*!< USB OTG FS, SDIO and RNG Clock =
 			     PLL_VCO / PLLQ */
 
+/* RCC Flag Mask */
+#define FLAG_MASK                 ((uint8_t)0x1F)
+
+#define RCC_OFFSET              (RCC_BASE - PERIPH_BASE)
+#define CR_OFFSET               (RCC_OFFSET + 0x00)
+
+/* Alias word address of PLLSAION bit */
+#define PLLSAION_BitNumber      0x1C
+#define CR_PLLSAION_BB          (PERIPH_BB_BASE + (CR_OFFSET * 32) + (PLLSAION_BitNumber * 4))
+
 void sys_clock_init(void)
 {
 	volatile uint32_t startup_count, HSE_status;
@@ -168,3 +178,58 @@ void RCC_APB2PeriphResetCmd(uint32_t rcc_APB2, uint8_t enable)
 	}
 }
 
+void RCC_PLLSAIConfig(uint32_t pllsain, uint32_t pllsaiq, uint32_t pllsair)
+{
+	//TODO: assertion
+
+	*RCC_PLLSAICFGR = (pllsain << 6) | (pllsaiq << 24) | (pllsair << 28);
+}
+
+void RCC_LTDCCLKDivConfig(uint32_t div)
+{
+	uint32_t tmpreg = 0;
+
+	//TODO: assertion
+
+	tmpreg = *RCC_DCKCFGR;
+
+	tmpreg &= ~~RCC_DCKCFGR_PLLSAIDIVR;
+
+	tmpreg |= div;
+
+	*RCC_DCKCFGR = tmpreg;
+}
+
+void RCC_PLLSAICmd(uint32_t enable)
+{
+	//TODO: assertion
+
+	*(volatile uint32_t *)CR_PLLSAION_BB = enable;
+}
+
+uint8_t RCC_GetFlagStatus(uint8_t flag)
+{
+	uint32_t tmp = 0;
+	uint32_t statusreg = 0;
+	uint8_t bitstatus = 0;
+
+	//TODO: assertion
+
+	tmp = flag >> 5;
+	if (tmp == 1) {
+		statusreg = *RCC_CR;
+	} else if (tmp == 2) {
+		statusreg = *RCC_BDCR;
+	} else {
+		statusreg = *RCC_CSR;
+	}
+
+	tmp = flag & FLAG_MASK;
+	if ((statusreg & ((uint32_t)1 << tmp)) != (uint32_t)0) {
+		bitstatus = 1;
+	} else {
+		bitstatus = 0;
+	}
+	
+	return bitstatus;
+}

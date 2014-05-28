@@ -9,6 +9,7 @@ chip-y = \
 	spi.o \
 	sdram.o \
 	fmc.o \
+	ltdc.o \
 	usart.o \
 	nvic.o \
 	systick.o \
