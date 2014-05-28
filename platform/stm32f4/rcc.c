@@ -135,6 +135,17 @@ void __USER_TEXT RCC_AHB1PeriphClockCmd(uint32_t rcc_AHB1, uint8_t enable)
 	}
 }
 
+void __USER_TEXT RCC_AHB3PeriphClockCmd(uint32_t rcc_AHB3, uint8_t enable)
+{
+	//TODO: assertion
+
+	if (enable != 0) {
+		*RCC_AHB3ENR |= rcc_AHB3;
+	} else {
+		*RCC_AHB3ENR &= ~rcc_AHB3;
+	}
+}
+
 void __USER_TEXT RCC_APB2PeriphClockCmd(uint32_t rcc_APB2, uint8_t enable)
 {
 	//TODO: assertion
