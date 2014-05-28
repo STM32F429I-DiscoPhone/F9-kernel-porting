@@ -67,6 +67,7 @@
 #define TIM9_BASE             (APB2PERIPH_BASE + 0x4000)
 #define TIM10_BASE            (APB2PERIPH_BASE + 0x4400)
 #define TIM11_BASE            (APB2PERIPH_BASE + 0x4800)
+#define SPI5_BASE             (APB2PERIPH_BASE + 0x5000)
 
 /* AHB */
 #define GPIO_BASE(port)                 (AHB1PERIPH_BASE + (0x400*port))                        /* GPIO Port base address */
@@ -122,6 +123,7 @@
 #define PWR_CSR                         (volatile uint32_t *) (PWR_BASE + 0x04)                 /* Power Control/Status Register */
 
 /* SPI */
+#define SPI_BASE(port)                  (volatile uint32_t *) port                              /* Temporary SPI base */
 #define SPI_CR1(port)                   (volatile uint32_t *) (SPI_BASE(port) + 0x00)           /* SPI control register 1 */
 #define SPI_CR2(port)                   (volatile uint32_t *) (SPI_BASE(port) + 0x04)           /* SPI control register 2 */
 #define SPI_SR(port)                    (volatile uint32_t *) (SPI_BASE(port) + 0x08)           /* SPI status register */
@@ -170,8 +172,10 @@
 #define RCC_CFGR                        (volatile uint32_t *) (RCC_BASE + 0x08)                 /* Clock Configuration Register */
 #define RCC_CIR                         (volatile uint32_t *) (RCC_BASE + 0x0C)                 /* Clock Interrupt Register */
 #define RCC_AHB1RSTR                    (volatile uint32_t *) (RCC_BASE + 0x10)                 /* AHB1 reset Register */
+#define RCC_APB2RSTR                    (volatile uint32_t *) (RCC_BASE + 0x24)                 /* APB2 reset Register */
 #define RCC_AHB1ENR                     (volatile uint32_t *) (RCC_BASE + 0x30)                 /* AHB1 Enable Register */
 #define RCC_AHB2ENR                     (volatile uint32_t *) (RCC_BASE + 0x34)                 /* AHB2 Enable Register */
+#define RCC_AHB3ENR                     (volatile uint32_t *) (RCC_BASE + 0x38)                 /* AHB3 Enable Register */
 #define RCC_APB1ENR                     (volatile uint32_t *) (RCC_BASE + 0x40)                 /* APB1 Peripheral Clock Enable Register */
 #define RCC_APB2ENR                     (volatile uint32_t *) (RCC_BASE + 0x44)                 /* APB2 Peripheral Clock Enable Register */
 
@@ -420,10 +424,12 @@
 #define RCC_APB2RSTR_ADCRST             (uint32_t) (1 << 8)                                     /* ADC1 reset */
 #define RCC_APB2RSTR_SDIORST            (uint32_t) (1 << 11)                                    /* SDIO reset */
 #define RCC_APB2RSTR_SPI1RST            (uint32_t) (1 << 12)                                    /* SPI1 reset */
+#define RCC_APB2RSTR_SPI5RST            (uint32_t) (1 << 20)                                    /* SPI5 reset */
 #define RCC_APB2RSTR_SYSCFGRST          (uint32_t) (1 << 14)                                    /* System configuration controller reset */
 #define RCC_APB2RSTR_TIM9RST            (uint32_t) (1 << 16)                                    /* TIM9 reset */
 #define RCC_APB2RSTR_TIM10RST           (uint32_t) (1 << 17)                                    /* TIM10 reset */
 #define RCC_APB2RSTR_TIM11RST           (uint32_t) (1 << 18)                                    /* TIM11 reset */
+#define RCC_APB2RSTR_LTDC               (uint32_t) (1 << 26)                                    /* LTDC reset */
 
 #define RCC_AHB1ENR_GPIOAEN             (uint32_t) (1 << 0)                                     /* GPIOA clock enable */
 #define RCC_AHB1ENR_GPIOBEN             (uint32_t) (1 << 1)                                     /* GPIOB clock enable */
@@ -439,6 +445,7 @@
 #define RCC_AHB1ENR_CCMDATARAMEN        (uint32_t) (1 << 20)                                    /* CCM data RAM clock enable */
 #define RCC_AHB1ENR_DMA1EN              (uint32_t) (1 << 21)                                    /* DMA1 clock enable */
 #define RCC_AHB1ENR_DMA2EN              (uint32_t) (1 << 22)                                    /* DMA2 clock enable */
+#define RCC_AHB1ENR_DMA2DEN             (uint32_t) (1 << 23)                                    /* DMA2D clock enable */
 #define RCC_AHB1ENR_ETHMACEN            (uint32_t) (1 << 25)                                    /* Ethernet MAC clock enable */
 #define RCC_AHB1ENR_ETHMACTXEN          (uint32_t) (1 << 26)                                    /* Ethernet MAC TX clock enable */
 #define RCC_AHB1ENR_ETHMACRXEN          (uint32_t) (1 << 27)                                    /* Ethernet MAC RX clock enable */
@@ -453,6 +460,7 @@
 #define RCC_AHB2ENR_OTGFSEN             (uint32_t) (1 << 7)                                     /* USB OTG FS clock enable */
 
 #define RCC_AHB3ENR_FSMCEN              (uint32_t) (1 << 0)                                     /* Flexible static memeory controller clock enable */
+#define RCC_AHB3ENR_FMCEN               (uint32_t) (1 << 0)                                     /* FMC clock enable */
 
 #define RCC_APB1ENR_TIM2EN              (uint32_t) (1 << 0)                                     /* TIM2 clock enable */
 #define RCC_APB1ENR_TIM3EN              (uint32_t) (1 << 1)                                     /* TIM3 clock enable */
@@ -491,6 +499,8 @@
 #define RCC_APB2ENR_TIM9EN              (uint32_t) (1 << 16)                                    /* TIM9 clock enable */
 #define RCC_APB2ENR_TIM10EN             (uint32_t) (1 << 17)                                    /* TIM10 clock enable */
 #define RCC_APB2ENR_TIM11EN             (uint32_t) (1 << 18)                                    /* TIM11 clock enable */
+#define RCC_APB2ENR_SPI5EN              (uint32_t) (1 << 20)                                    /* SPI5 clock enable */
+#define RCC_APB2ENR_LTDCEN                (uint32_t) (1 << 26)                                  /* LTDC clock enable */
 
 #define FLASH_ACR_PRFTEN                (uint32_t) (1 << 8)                                     /* Prefetch enable */
 #define FLASH_ACR_ICEN                  (uint32_t) (1 << 9)                                     /* Instruction cache enable */
@@ -1019,5 +1029,16 @@
 #define USB_FS_PCGCCTL_STPPCLK          (uint32_t) (1 << 0)                                     /* USB stop PHY clock */
 #define USB_FS_PCGCCTL_GATEHCLK         (uint32_t) (1 << 1)                                     /* USB gate HCLK */
 #define USB_FS_PCGCCTL_PHYSUSP          (uint32_t) (1 << 4)                                     /* USB PHY suspended */
+
+/* FMC definition */
+#define FMC_R_BASE                      ((uint32_t) 0xA0000000)                                 /* FMC registers base address */
+
+#define FMC_Bank5_6_R_BASE              (FMC_R_BASE + 0x0140)
+
+#define FMC_Bank5_6_SDCR(n)             (volatile uint32_t *) (FMC_Bank5_6_R_BASE + 0x140 + (4*n))      /* SDRAM Control Register */
+#define FMC_Bank5_6_SDTR(n)             (volatile uint32_t *) (FMC_Bank5_6_R_BASE + 0x148 + (4*n))      /* SDRAM Timing Register */
+#define FMC_Bank5_6_SDCMR               (volatile uint32_t *) (FMC_Bank5_6_R_BASE + 0x150)      /* SDRAM Command Mode Register */
+#define FMC_Bank5_6_SDRTR               (volatile uint32_t *) (FMC_Bank5_6_R_BASE + 0x154)      /* SDRAM Refresh Timer Register */
+#define FMC_Bank5_6_SDSR                (volatile uint32_t *) (FMC_Bank5_6_R_BASE + 0x158)      /* SDRAM Status Register */
 
 #endif

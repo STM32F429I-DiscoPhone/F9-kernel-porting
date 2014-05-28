@@ -5,6 +5,10 @@
 chip-y = \
 	gpio.o \
 	rcc.o \
+	lcd.o \
+	spi.o \
+	sdram.o \
+	fmc.o \
 	usart.o \
 	nvic.o \
 	systick.o \
