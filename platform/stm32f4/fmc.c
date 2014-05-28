@@ -22,7 +22,7 @@ void fmc_sdram_init(struct fmc_sdram_cfg *cfg)
 	if (cfg->bank == FMC_Bank1_SDRAM) {
 		*FMC_Bank5_6_SDCR(cfg->bank) = tmpr1;
 	} else {
-		tmpr3 = (uint32_t)cfg->sd_lock_period |
+		tmpr3 = (uint32_t)cfg->sd_clock_period |
 		        cfg->readburst |
 				cfg->readpipe_delay;
 
