@@ -5,36 +5,34 @@
 
 void sdram_init(void)
 {
-	struct fmc_sdram_cfg fs_init;
-	struct fmc_sdram_timing_cfg fs_timing_init;
 
 	sdram_gpio_init();
 
 	RCC_AHB3PeriphClockCmd(RCC_AHB3ENR_FMCEN, 1);
 
-	fs_timing_init = {
-		.lta_delay = 2; //2 clock cycles
-		.esr_delay = 7; //70ns
-		.sr_time = 4; //42ns
-		.rc_delay = 7; //70
-		.wr_time = 2; //1+ 7ns
-		.rp_delay = 2; //20ns
-		.rcd_delay = 2; //20ns
-	}
+	struct fmc_sdram_timing_cfg fs_timing_init = {
+		.lta_delay = 2, //2 clock cycles
+		.esr_delay = 7, //70ns
+		.sr_time = 4, //42ns
+		.rc_delay = 7, //70
+		.wr_time = 2, //1+ 7ns
+		.rp_delay = 2, //20ns
+		.rcd_delay = 2 //20ns
+	};
 	
-	fs_init = {
-		.bank = FMC_Bank2_SDRAM;
-		.column_bits_number = FMC_ColumnBits_Number_8b;
-		.row_bits_number = FMC_RowBits_Number_12b;
-		.sdmemory_data_width = SDRAM_MEMORY_WIDTH;
-		.internal_bank_number = FMC_InternalBank_Number_4;
-		.cas_latency = SDRAM_CAS_LATENCY;
-		.write_protection = FMC_Write_Protection_Disable;
-		.sd_clock_period = SDCLOCK_PERIOD;
-		.readburst = SDRAM_READBURST;
-		.readpipe_delay = FMC_ReadPipe_Delay_1;
-		.timing = &fs_timing_init;
-	}
+	struct fmc_sdram_cfg fs_init = {
+		.bank = FMC_Bank2_SDRAM,
+		.column_bits_number = FMC_ColumnBits_Number_8b,
+		.row_bits_number = FMC_RowBits_Number_12b,
+		.sdmemory_data_width = SDRAM_MEMORY_WIDTH,
+		.internal_bank_number = FMC_InternalBank_Number_4,
+		.cas_latency = SDRAM_CAS_LATENCY,
+		.write_protection = FMC_Write_Protection_Disable,
+		.sd_clock_period = SDCLOCK_PERIOD,
+		.readburst = SDRAM_READBURST,
+		.readpipe_delay = FMC_ReadPipe_Delay_1,
+		.timing = &fs_timing_init
+	};
 
 	fmc_sdram_init(&fs_init);
 
@@ -151,16 +149,15 @@ void sdram_gpio_init(void)
 
 void sdram_init_seq(void)
 {
-	struct fmc_sdram_cmd fs_cmd;
 	uint32_t i;
 	uint32_t tmpr = 0;
 
-	fs_cmd = {
-		.mode = FMC_Command_Mode_CLK_Enabled;
-		.target = FMC_Command_Target_bank2;
-		.auto_refresh_number = 1;
-		.mode_register_definition = 0;
-	}
+	struct fmc_sdram_cmd fs_cmd = {
+		.mode = FMC_Command_Mode_CLK_Enabled,
+		.target = FMC_Command_Target_bank2,
+		.auto_refresh_number = 1,
+		.mode_register_definition = 0,
+	};
 	
 	while (fmc_get_flag(FMC_Bank2_SDRAM, FMC_FLAG_BUSY) != 0) ;
 
@@ -172,23 +169,19 @@ void sdram_init_seq(void)
 	while (i < 100)
 		i++;
 
-	fs_cmd = {
-		.mode = FMC_Command_Mode_PALL;
-		.target = FMC_Command_Target_bank2;
-		.auto_refresh_number = 1;
-		.mode_register_definition = 0;
-	}
+	fs_cmd.mode = FMC_Command_Mode_PALL;
+	fs_cmd.target = FMC_Command_Target_bank2;
+	fs_cmd.auto_refresh_number = 1;
+	fs_cmd.mode_register_definition = 0;
 
 	while (fmc_get_flag(FMC_Bank2_SDRAM, FMC_FLAG_BUSY) != 0) ;
 
 	fmc_sdram_cmd_init(&fs_cmd);
 
-	fs_cmd = {
-		.mode = FMC_Command_Mode_AutoRefresh;
-		.target = FMC_Command_Target_bank2;
-		.auto_refresh_number = 4;
-		.mode_register_definition = 0;
-	}
+	fs_cmd.mode = FMC_Command_Mode_AutoRefresh;
+	fs_cmd.target = FMC_Command_Target_bank2;
+	fs_cmd.auto_refresh_number = 4;
+	fs_cmd.mode_register_definition = 0;
 
 	while (fmc_get_flag(FMC_Bank2_SDRAM, FMC_FLAG_BUSY) != 0) ;
 
@@ -204,12 +197,10 @@ void sdram_init_seq(void)
            SDRAM_MODEREG_OPERATING_MODE_STANDARD |
            SDRAM_MODEREG_WRITEBURST_MODE_SINGLE;
 
-	fs_cmd = {
-		.mode = FMC_Command_Mode_LoadMode;
-		.target = FMC_Command_Target_bank2;
-		.auto_refresh_number = 1;
-		.mode_register_definition = tmpr;
-	}
+	fs_cmd.mode = FMC_Command_Mode_LoadMode;
+	fs_cmd.target = FMC_Command_Target_bank2;
+	fs_cmd.auto_refresh_number = 1;
+	fs_cmd.mode_register_definition = tmpr;
 
 	while (fmc_get_flag(FMC_Bank2_SDRAM, FMC_FLAG_BUSY) != 0) ;
 

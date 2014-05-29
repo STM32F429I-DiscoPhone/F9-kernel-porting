@@ -212,7 +212,6 @@ void lcd_poweron(void)
 
 void lcd_spi_config(void)
 {
-	struct spi_cfg spi_init;
 	/* Enable clock */
 	RCC_AHB1PeriphClockCmd(LCD_SPI_SCK_GPIO_CLK | LCD_SPI_MISO_GPIO_CLK | LCD_SPI_MOSI_GPIO_CLK, 1);
 
@@ -228,18 +227,19 @@ void lcd_spi_config(void)
 
 	spi_i2s_reset(LCD_SPI);
 
-	if ((*(SPI_CR1(LCD_SPI)) & SPI_CR1_SPE) == 0) {
-		spi_init = {
-			.direction = (uint16_t)0x0000; //2 lines full duplex
-			.mode = (uint16_t) 0x0104; //master
-			.size = (uint16_t) 0x0000; //8b
-			.cpol = (uint16_t) 0x0000; //low
-			.cpha = (uint16_t) 0x0000; //1Edge
-			.nss = (uint16_t) 0x0200; //soft
-			.baudrate = (uint16_t) 0x0018; //prescaler 16
-			.firstbit = (uint16_t) 0x0000; //MSB
-			.crcpolynomial = 7;
-		}
+	if ((*(SPI_CR1(LCD_SPI)) & (SPI_CR1_SPE)) == 0) {
+		
+		struct spi_cfg spi_init = {
+			.direction = (uint16_t)0x0000, //2 lines full duplex
+			.mode = (uint16_t) 0x0104, //master
+			.size = (uint16_t) 0x0000, //8b
+			.cpol = (uint16_t) 0x0000, //low
+			.cpha = (uint16_t) 0x0000, //1Edge
+			.nss = (uint16_t) 0x0200, //soft
+			.baudrate = (uint16_t) 0x0018, //prescaler 16
+			.firstbit = (uint16_t) 0x0000, //MSB
+			.crcpolynomial = 7
+		};
 		spi_config(LCD_SPI, &spi_init);
 
 		/* Enable L3GD20_SPI */
@@ -270,7 +270,7 @@ void lcd_chipselect(uint8_t enable)
 	}
 }
 
-static void lcd_af_gpio_init(void)
+void lcd_af_gpio_init(void)
 {
 	struct gpio_cfg gpio_init;
 

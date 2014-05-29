@@ -39,7 +39,7 @@ void lcd_spi_config(void);
 void lcd_ctrllines_write(uint8_t port, uint8_t pin, uint8_t reset);
 void lcd_ctrllines_init(void);
 void lcd_chipselect(uint8_t enable);
-static void lcd_af_gpio_init(void);
+void lcd_af_gpio_init(void);
 
 #endif
 
