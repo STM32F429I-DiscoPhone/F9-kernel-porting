@@ -5,7 +5,6 @@
 
 #include <platform/stm32f4/gpio.h>
 #include <platform/link.h>
-#include <error.h>
 
 inline static void gpio_moder(uint8_t port, uint8_t pin, uint8_t type)
 {

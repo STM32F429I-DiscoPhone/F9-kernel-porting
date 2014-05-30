@@ -10,6 +10,7 @@
 #include <l4io.h>
 #include <platform/stm32f4/gpio.h>
 #include <platform/stm32f4/rcc.h>
+#include <platform/stm32f4/lcd.h>
 #define STACK_SIZE 256
 
 static void __USER_TEXT main(user_struct *user)
@@ -19,7 +20,7 @@ static void __USER_TEXT main(user_struct *user)
 	gpio_config_input(GPIOA, 0, GPIO_PUPDR_NONE);
     gpio_config_output(GPIOG, 13, GPIO_PUPDR_UP, GPIO_OSPEEDR_50M);
     gpio_config_output(GPIOG, 14, GPIO_PUPDR_UP, GPIO_OSPEEDR_50M);
-
+	lcd_init();
     while(1) {
 		flag = gpio_input_bit(GPIOA, 0);
 
@@ -41,5 +42,10 @@ DECLARE_USER(
 	gpioer,
 	main,
 	DECLARE_FPAGE(0x0, UTCB_SIZE + STACK_SIZE)
+//	DECLARE_FPAGE(0x40010000, 0x3c00)
+	DECLARE_FPAGE(0x40015000, 0x0c00)
 	DECLARE_FPAGE(0x40020000, 0x3c00)
+	//DECLARE_FPAGE(0x42000000, 0x3c00)
+	//DECLARE_FPAGE(0x50000000, 0x8c00)
+	//DECLARE_FPAGE(0xA0000000, 0x3c00)
 );
