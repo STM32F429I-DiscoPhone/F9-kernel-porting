@@ -54,7 +54,7 @@ void __USER_TEXT lcd_init(void)
 	ltdc_init(&ltdc_cfg);
 }
 
-void lcd_write_cmd(uint8_t lcdreg)
+void __USER_TEXT lcd_write_cmd(uint8_t lcdreg)
 {
 	lcd_ctrllines_write(LCD_WRX_GPIO_PORT, LCD_WRX_PIN, 0);
 
@@ -68,7 +68,7 @@ void lcd_write_cmd(uint8_t lcdreg)
 	lcd_chipselect(1);
 }
 
-void lcd_write_data(uint8_t value)
+void __USER_TEXT lcd_write_data(uint8_t value)
 {
 	lcd_ctrllines_write(LCD_WRX_GPIO_PORT, LCD_WRX_PIN, 1);
 
@@ -82,7 +82,7 @@ void lcd_write_data(uint8_t value)
 	lcd_chipselect(1);
 }
 
-void lcd_poweron(void)
+void __USER_TEXT lcd_poweron(void)
 {
 	uint8_t i;
 	lcd_write_cmd(0xca);
@@ -210,7 +210,7 @@ void lcd_poweron(void)
 	lcd_write_cmd(0x2c); //LCD_GRAM
 }
 
-void lcd_spi_config(void)
+void __USER_TEXT lcd_spi_config(void)
 {
 	/* Enable clock */
 	RCC_AHB1PeriphClockCmd(LCD_SPI_SCK_GPIO_CLK | LCD_SPI_MISO_GPIO_CLK | LCD_SPI_MOSI_GPIO_CLK, 1);
@@ -247,12 +247,12 @@ void lcd_spi_config(void)
 	}
 }
 
-void lcd_ctrllines_write(uint8_t port, uint8_t pin, uint8_t reset)
+void __USER_TEXT lcd_ctrllines_write(uint8_t port, uint8_t pin, uint8_t reset)
 {
 	gpio_writebit(port, pin, reset);
 }
 
-void lcd_ctrllines_init(void)
+void __USER_TEXT lcd_ctrllines_init(void)
 {
 	RCC_AHB1PeriphClockCmd(LCD_NCS_GPIO_CLK | LCD_WRX_GPIO_CLK, 1);
 	gpio_config_output(LCD_WRX_GPIO_PORT, LCD_WRX_PIN, GPIO_PUPDR_NONE, GPIO_OSPEEDR_50M);
@@ -261,7 +261,7 @@ void lcd_ctrllines_init(void)
 	lcd_ctrllines_write(LCD_NCS_GPIO_PORT, LCD_NCS_PIN, 1);
 }
 
-void lcd_chipselect(uint8_t enable)
+void __USER_TEXT lcd_chipselect(uint8_t enable)
 {
 	if (enable == 0) {
 		*GPIO_BSRR(LCD_NCS_GPIO_PORT) = GPIO_BSRR_BR(LCD_NCS_PIN);
@@ -270,7 +270,7 @@ void lcd_chipselect(uint8_t enable)
 	}
 }
 
-void lcd_af_gpio_init(void)
+void __USER_TEXT lcd_af_gpio_init(void)
 {
 	struct gpio_cfg gpio_init;
 

@@ -1,6 +1,6 @@
 #include <platform/stm32f4/fmc.h>
 
-void fmc_sdram_init(struct fmc_sdram_cfg *cfg)
+void __USER_TEXT fmc_sdram_init(struct fmc_sdram_cfg *cfg)
 {
 	uint32_t tmpr1 = 0;
 	uint32_t tmpr2 = 0;
@@ -55,7 +55,7 @@ void fmc_sdram_init(struct fmc_sdram_cfg *cfg)
 
 }
 
-uint8_t fmc_get_flag(uint32_t bank, uint32_t flag)
+uint8_t __USER_TEXT fmc_get_flag(uint32_t bank, uint32_t flag)
 {
 	uint8_t bitstatus = 0;
 	uint32_t tmpsr = 0x00000000;
@@ -77,7 +77,7 @@ uint8_t fmc_get_flag(uint32_t bank, uint32_t flag)
 	return bitstatus;
 }
 
-void fmc_sdram_cmd_init(struct fmc_sdram_cmd *cmd)
+void __USER_TEXT fmc_sdram_cmd_init(struct fmc_sdram_cmd *cmd)
 {
 	uint32_t tmpr = 0x0;
 
@@ -90,7 +90,7 @@ void fmc_sdram_cmd_init(struct fmc_sdram_cmd *cmd)
 	*FMC_Bank5_6_SDCMR = tmpr;
 }
 
-void fmc_set_refresh_count(uint32_t count)
+void __USER_TEXT fmc_set_refresh_count(uint32_t count)
 {
 	//TODO: assertion
 

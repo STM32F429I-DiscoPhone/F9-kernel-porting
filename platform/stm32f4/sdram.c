@@ -3,7 +3,7 @@
 #include <platform/stm32f4/gpio.h>
 #include <platform/stm32f4/fmc.h>
 
-void sdram_init(void)
+void __USER_TEXT sdram_init(void)
 {
 
 	sdram_gpio_init();
@@ -39,7 +39,7 @@ void sdram_init(void)
 	sdram_init_seq();
 }
 
-void sdram_gpio_init(void)
+void __USER_TEXT sdram_gpio_init(void)
 {
 	struct gpio_cfg gpio_init;
 
@@ -147,7 +147,7 @@ void sdram_gpio_init(void)
 
 }
 
-void sdram_init_seq(void)
+void __USER_TEXT sdram_init_seq(void)
 {
 	uint32_t i;
 	uint32_t tmpr = 0;

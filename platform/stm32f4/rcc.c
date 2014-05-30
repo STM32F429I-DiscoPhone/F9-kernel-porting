@@ -167,7 +167,7 @@ void __USER_TEXT RCC_APB2PeriphClockCmd(uint32_t rcc_APB2, uint8_t enable)
 	}
 }
 
-void RCC_APB2PeriphResetCmd(uint32_t rcc_APB2, uint8_t enable)
+void __USER_TEXT RCC_APB2PeriphResetCmd(uint32_t rcc_APB2, uint8_t enable)
 {
 	//TODO: assertion
 
@@ -178,14 +178,14 @@ void RCC_APB2PeriphResetCmd(uint32_t rcc_APB2, uint8_t enable)
 	}
 }
 
-void RCC_PLLSAIConfig(uint32_t pllsain, uint32_t pllsaiq, uint32_t pllsair)
+void __USER_TEXT RCC_PLLSAIConfig(uint32_t pllsain, uint32_t pllsaiq, uint32_t pllsair)
 {
 	//TODO: assertion
 
 	*RCC_PLLSAICFGR = (pllsain << 6) | (pllsaiq << 24) | (pllsair << 28);
 }
 
-void RCC_LTDCCLKDivConfig(uint32_t div)
+void __USER_TEXT RCC_LTDCCLKDivConfig(uint32_t div)
 {
 	uint32_t tmpreg = 0;
 
@@ -200,14 +200,14 @@ void RCC_LTDCCLKDivConfig(uint32_t div)
 	*RCC_DCKCFGR = tmpreg;
 }
 
-void RCC_PLLSAICmd(uint32_t enable)
+void __USER_TEXT RCC_PLLSAICmd(uint32_t enable)
 {
 	//TODO: assertion
 
 	*(volatile uint32_t *)CR_PLLSAION_BB = enable;
 }
 
-uint8_t RCC_GetFlagStatus(uint8_t flag)
+uint8_t __USER_TEXT RCC_GetFlagStatus(uint8_t flag)
 {
 	uint32_t tmp = 0;
 	uint32_t statusreg = 0;

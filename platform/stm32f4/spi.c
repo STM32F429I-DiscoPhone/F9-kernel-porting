@@ -4,7 +4,7 @@
 #define CR1_CLEAR_MASK           ((uint16_t)0x3040)
 #define SPI_I2SCFGR_I2SMOD       ((uint16_t)0x0800)
 
-void spi_config(uint32_t spix, struct spi_cfg *spi_init)
+void __USER_TEXT spi_config(uint32_t spix, struct spi_cfg *spi_init)
 {
 	uint16_t tmpreg = 0;
 	
@@ -23,7 +23,7 @@ void spi_config(uint32_t spix, struct spi_cfg *spi_init)
 	*SPI_CRCPR(spix) = spi_init->crcpolynomial;
 }
 
-void spi_cmd(uint32_t spix, uint8_t enable)
+void __USER_TEXT spi_cmd(uint32_t spix, uint8_t enable)
 {
 	//TODO: assertion
 
@@ -34,14 +34,14 @@ void spi_cmd(uint32_t spix, uint8_t enable)
 	}
 }
 
-void spi_i2s_send(uint32_t spix, uint16_t data)
+void __USER_TEXT spi_i2s_send(uint32_t spix, uint16_t data)
 {
 	//TODO: assertion
 
 	*SPI_DR(spix) = data;
 }
 
-void spi_i2s_reset(uint32_t spix)
+void __USER_TEXT spi_i2s_reset(uint32_t spix)
 {
 	//TODO: assertion
 
@@ -54,7 +54,7 @@ void spi_i2s_reset(uint32_t spix)
 	}
 }
 
-uint8_t spi_i2s_get_flagstatus(uint32_t spix, uint16_t flag)
+uint8_t __USER_TEXT spi_i2s_get_flagstatus(uint32_t spix, uint16_t flag)
 {
 	uint8_t bitstatus = 0;
 

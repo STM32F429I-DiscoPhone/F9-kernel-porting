@@ -1,6 +1,7 @@
 #ifndef PLATFORM_STM32F4_SPI_H__
 #define PLATFORM_STM32F4_SPI_H__
 
+#include <platform/link.h>
 #include <platform/stm32f4/registers.h>
 
 #define SPI_I2S_FLAG_RXNE               ((uint16_t)0x0001)

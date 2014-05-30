@@ -2,7 +2,7 @@
 
 #define GCR_MASK                    ((uint32_t)0x0FFE888F)
 									
-void ltdc_init(struct ltdc_cfg *cfg)
+void __USER_TEXT ltdc_init(struct ltdc_cfg *cfg)
 {
 	uint32_t horizontalsync = 0;
 	uint32_t accumulatedHBP = 0;

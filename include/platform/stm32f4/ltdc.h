@@ -1,6 +1,7 @@
 #ifndef PLATFORM_STM32F4_LTDC_H__
 #define PLATFORM_STM32F4_LTDC_H__
 
+#include <platform/link.h>
 #include <platform/stm32f4/registers.h>
 
 #define LTDC_HSPolarity_AL               ((uint32_t)0x00000000)                  /* Horizontal Synchronization is active low */

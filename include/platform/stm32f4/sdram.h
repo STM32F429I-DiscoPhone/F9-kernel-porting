@@ -1,6 +1,7 @@
 #ifndef PLATFORM_STM32F4_SDRAM_H__
 #define PLATFORM_STM32F4_SDRAM_H__
 
+#include <platform/link.h>
 #include <platform/stm32f4/registers.h>
 
 #define SDRAM_MEMORY_WIDTH    FMC_SDMemory_Width_16b

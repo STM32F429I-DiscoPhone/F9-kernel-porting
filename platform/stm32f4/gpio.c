@@ -64,7 +64,7 @@ inline static void gpio_afr(uint8_t port, uint8_t pin, uint8_t func)
 	}
 }
 
-void gpio_pinaf_config(uint8_t port, uint8_t pin, uint8_t func)
+void __USER_TEXT gpio_pinaf_config(uint8_t port, uint8_t pin, uint8_t func)
 {
 	gpio_afr(port,pin,func);
 }
@@ -156,7 +156,7 @@ uint8_t __USER_TEXT gpio_input_bit(uint8_t port, uint8_t pin)
 	return 0;
 }
 
-void gpio_writebit(uint8_t port, uint8_t pin, uint8_t bitval)
+void __USER_TEXT gpio_writebit(uint8_t port, uint8_t pin, uint8_t bitval)
 {
 	if (bitval != 0) {
 		*GPIO_BSRR(port) = GPIO_BSRR_BS(pin);

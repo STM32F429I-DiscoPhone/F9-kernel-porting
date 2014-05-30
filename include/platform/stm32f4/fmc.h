@@ -1,6 +1,7 @@
 #ifndef PLATFORM_STM32F4_FMC_H__
 #define PLATFORM_STM32F4_FMC_H__
 
+#include <platform/link.h>
 #include <platform/stm32f4/registers.h>
 
 struct fmc_sdram_cfg {
