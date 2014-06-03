@@ -212,6 +212,7 @@ void __USER_TEXT lcd_poweron(void)
 
 void __USER_TEXT lcd_spi_config(void)
 {
+	struct spi_cfg spi_init;
 	/* Enable clock */
 	RCC_AHB1PeriphClockCmd(LCD_SPI_SCK_GPIO_CLK | LCD_SPI_MISO_GPIO_CLK | LCD_SPI_MOSI_GPIO_CLK, 1);
 
@@ -228,8 +229,8 @@ void __USER_TEXT lcd_spi_config(void)
 	spi_i2s_reset(LCD_SPI);
 
 	if ((*(SPI_CR1(LCD_SPI)) & (SPI_CR1_SPE)) == 0) {
-		
-		struct spi_cfg spi_init = {
+		// Cause memfault using declaration down here
+		/*struct spi_cfg spi_init = {
 			.direction = (uint16_t)0x0000, //2 lines full duplex
 			.mode = (uint16_t) 0x0104, //master
 			.size = (uint16_t) 0x0000, //8b
@@ -239,9 +240,17 @@ void __USER_TEXT lcd_spi_config(void)
 			.baudrate = (uint16_t) 0x0018, //prescaler 16
 			.firstbit = (uint16_t) 0x0000, //MSB
 			.crcpolynomial = 7
-		};
+		};*/
+		spi_init.direction = (uint16_t)0x0000; //2 lines full duplex
+		spi_init.mode = (uint16_t) 0x0104; //master
+		spi_init.size = (uint16_t) 0x0000; //8b
+		spi_init.cpol = (uint16_t) 0x0000; //low
+		spi_init.cpha = (uint16_t) 0x0000; //1Edge
+		spi_init.nss = (uint16_t) 0x0200; //soft
+		spi_init.baudrate = (uint16_t) 0x0018; //prescaler 16
+		spi_init.firstbit = (uint16_t) 0x0000; //MSB
+		spi_init.crcpolynomial = 7;
 		spi_config(LCD_SPI, &spi_init);
-
 		/* Enable L3GD20_SPI */
 		spi_cmd(LCD_SPI, 1);
 	}

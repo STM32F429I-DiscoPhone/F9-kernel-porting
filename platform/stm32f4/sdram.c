@@ -5,34 +5,32 @@
 
 void __USER_TEXT sdram_init(void)
 {
+	struct fmc_sdram_timing_cfg fs_timing_init;
+	struct fmc_sdram_cfg fs_init;
 
 	sdram_gpio_init();
 
 	RCC_AHB3PeriphClockCmd(RCC_AHB3ENR_FMCEN, 1);
 
-	struct fmc_sdram_timing_cfg fs_timing_init = {
-		.lta_delay = 2, //2 clock cycles
-		.esr_delay = 7, //70ns
-		.sr_time = 4, //42ns
-		.rc_delay = 7, //70
-		.wr_time = 2, //1+ 7ns
-		.rp_delay = 2, //20ns
-		.rcd_delay = 2 //20ns
-	};
+	fs_timing_init.lta_delay = 2; //2 clock cycles
+	fs_timing_init.esr_delay = 7; //70ns
+	fs_timing_init.sr_time = 4; //42ns
+	fs_timing_init.rc_delay = 7; //70
+	fs_timing_init.wr_time = 2; //1+ 7ns
+	fs_timing_init.rp_delay = 2; //20ns
+	fs_timing_init.rcd_delay = 2; //20ns
 	
-	struct fmc_sdram_cfg fs_init = {
-		.bank = FMC_Bank2_SDRAM,
-		.column_bits_number = FMC_ColumnBits_Number_8b,
-		.row_bits_number = FMC_RowBits_Number_12b,
-		.sdmemory_data_width = SDRAM_MEMORY_WIDTH,
-		.internal_bank_number = FMC_InternalBank_Number_4,
-		.cas_latency = SDRAM_CAS_LATENCY,
-		.write_protection = FMC_Write_Protection_Disable,
-		.sd_clock_period = SDCLOCK_PERIOD,
-		.readburst = SDRAM_READBURST,
-		.readpipe_delay = FMC_ReadPipe_Delay_1,
-		.timing = &fs_timing_init
-	};
+	fs_init.bank = FMC_Bank2_SDRAM;
+	fs_init.column_bits_number = FMC_ColumnBits_Number_8b;
+	fs_init.row_bits_number = FMC_RowBits_Number_12b;
+	fs_init.sdmemory_data_width = SDRAM_MEMORY_WIDTH;
+	fs_init.internal_bank_number = FMC_InternalBank_Number_4;
+	fs_init.cas_latency = SDRAM_CAS_LATENCY;
+	fs_init.write_protection = FMC_Write_Protection_Disable;
+	fs_init.sd_clock_period = SDCLOCK_PERIOD;
+	fs_init.readburst = SDRAM_READBURST;
+	fs_init.readpipe_delay = FMC_ReadPipe_Delay_1;
+	fs_init.timing = &fs_timing_init;
 
 	fmc_sdram_init(&fs_init);
 
@@ -151,13 +149,12 @@ void __USER_TEXT sdram_init_seq(void)
 {
 	uint32_t i;
 	uint32_t tmpr = 0;
+	struct fmc_sdram_cmd fs_cmd;
 
-	struct fmc_sdram_cmd fs_cmd = {
-		.mode = FMC_Command_Mode_CLK_Enabled,
-		.target = FMC_Command_Target_bank2,
-		.auto_refresh_number = 1,
-		.mode_register_definition = 0,
-	};
+	fs_cmd.mode = FMC_Command_Mode_CLK_Enabled;
+	fs_cmd.target = FMC_Command_Target_bank2;
+	fs_cmd.auto_refresh_number = 1;
+	fs_cmd.mode_register_definition = 0;
 	
 	while (fmc_get_flag(FMC_Bank2_SDRAM, FMC_FLAG_BUSY) != 0) ;
 

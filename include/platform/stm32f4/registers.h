@@ -124,7 +124,7 @@
 #define PWR_CSR                         (volatile uint32_t *) (PWR_BASE + 0x04)                 /* Power Control/Status Register */
 
 /* SPI */
-#define SPI_BASE(port)                  (volatile uint32_t *) port                              /* Temporary SPI base */
+#define SPI_BASE(port)                  (port)                              /* Temporary SPI base */
 #define SPI_CR1(port)                   (volatile uint32_t *) (SPI_BASE(port) + 0x00)           /* SPI control register 1 */
 #define SPI_CR2(port)                   (volatile uint32_t *) (SPI_BASE(port) + 0x04)           /* SPI control register 2 */
 #define SPI_SR(port)                    (volatile uint32_t *) (SPI_BASE(port) + 0x08)           /* SPI status register */

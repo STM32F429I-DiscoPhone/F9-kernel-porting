@@ -4,15 +4,15 @@
 #include <platform/link.h>
 #include <platform/stm32f4/registers.h>
 
-#define SPI_I2S_FLAG_RXNE               ((uint16_t)0x0001)
-#define SPI_I2S_FLAG_TXE                ((uint16_t)0x0002)
-#define I2S_FLAG_CHSIDE                 ((uint16_t)0x0004)
-#define I2S_FLAG_UDR                    ((uint16_t)0x0008)
-#define SPI_FLAG_CRCERR                 ((uint16_t)0x0010)
-#define SPI_FLAG_MODF                   ((uint16_t)0x0020)
-#define SPI_I2S_FLAG_OVR                ((uint16_t)0x0040)
-#define SPI_I2S_FLAG_BSY                ((uint16_t)0x0080)
-#define SPI_I2S_FLAG_TIFRFE             ((uint16_t)0x0100)
+#define SPI_I2S_FLAG_RXNE               (uint16_t) (1 << 0)
+#define SPI_I2S_FLAG_TXE                (uint16_t) (1 << 1)
+#define I2S_FLAG_CHSIDE                 (uint16_t) (1 << 2)
+#define I2S_FLAG_UDR                    (uint16_t) (1 << 3)
+#define SPI_FLAG_CRCERR                 (uint16_t) (1 << 4)
+#define SPI_FLAG_MODF                   (uint16_t) (1 << 5)
+#define SPI_I2S_FLAG_OVR                (uint16_t) (1 << 6)
+#define SPI_I2S_FLAG_BSY                (uint16_t) (1 << 7)
+#define SPI_I2S_FLAG_TIFRFE             (uint16_t) (1 << 8)
 
 
 struct spi_cfg {
