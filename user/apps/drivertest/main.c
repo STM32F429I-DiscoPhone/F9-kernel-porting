@@ -22,6 +22,8 @@ static void __USER_TEXT main(user_struct *user)
     gpio_config_output(GPIOG, 14, GPIO_PUPDR_UP, GPIO_OSPEEDR_50M);
 	lcd_init();
 	lcd_layer_init();
+
+	lcd_clear(LCD_COLOR_RED);
     while(1) {
 		flag = gpio_input_bit(GPIOA, 0);
 
@@ -49,4 +51,5 @@ DECLARE_USER(
 	DECLARE_FPAGE(0x42470000, 0x0c00)
 	DECLARE_FPAGE(0x40016800, 0x0c00)
 	DECLARE_FPAGE(0xA0000000, 0x1000)
+	DECLARE_FPAGE(0xD0000000, 0x1000)
 );
