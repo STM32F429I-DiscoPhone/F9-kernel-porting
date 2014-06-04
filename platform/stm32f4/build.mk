@@ -10,6 +10,7 @@ chip-y = \
 	sdram.o \
 	fmc.o \
 	ltdc.o \
+	dma2d.o \
 	usart.o \
 	nvic.o \
 	systick.o \

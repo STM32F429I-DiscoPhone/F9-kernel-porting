@@ -76,6 +76,7 @@
 #define FLASH_R_BASE                    (AHB1PERIPH_BASE + 0x3C00)                              /* Flash registers base address */
 #define DMA1_BASE                       (AHB1PERIPH_BASE + 0x6000)                              /* DMA1 base address */
 #define DMA2_BASE                       (AHB1PERIPH_BASE + 0x6400)                              /* DMA2 base address */
+#define DMA2D_BASE                      (AHB1PERIPH_BASE + 0xB000)                              /* DMA2D base address */
 #define USB_FS_BASE                     (AHB2PERIPH_BASE + 0x0000)                              /* USB OTG FS base address */
 
 
@@ -263,6 +264,28 @@
 #define DMA2_M0AR_S(n)                  (volatile uint32_t *) (DMA2_BASE + 0x1C + (0x18*n))     /* DMA2 stream n memory 0 address register */
 #define DMA2_M1AR_S(n)                  (volatile uint32_t *) (DMA2_BASE + 0x20 + (0x18*n))     /* DMA2 stream n memory 1 address register */
 #define DMA2_FCR_S(n)                   (volatile uint32_t *) (DMA2_BASE + 0x24 + (0x18*n))     /* DMA2 stream n FIFO control register */
+
+/* DMA2D Registers */
+#define DMA2D_CR                        (volatile uint32_t *) (DMA2D_BASE + 0x00)               /* DMA2D Control Register */
+#define DMA2D_ISR                       (volatile uint32_t *) (DMA2D_BASE + 0x04)               /* DMA2D Interrupt Status Register */
+#define DMA2D_IFCR                      (volatile uint32_t *) (DMA2D_BASE + 0x08)               /* DMA2D Interrupt Flag Clear Register */
+#define DMA2D_FGMAR                     (volatile uint32_t *) (DMA2D_BASE + 0x0C)               /* DMA2D Foreground Memory Address Register */
+#define DMA2D_FGOR                      (volatile uint32_t *) (DMA2D_BASE + 0x10)               /* DMA2D Foreground Offset Register */
+#define DMA2D_BGMAR                     (volatile uint32_t *) (DMA2D_BASE + 0x14)               /* DMA2D Background Memory Address Register */
+#define DMA2D_BGOR                      (volatile uint32_t *) (DMA2D_BASE + 0x18)               /* DMA2D Background Offset Register */
+#define DMA2D_FGPFCCR                   (volatile uint32_t *) (DMA2D_BASE + 0x1C)               /* DMA2D Foreground PFC Control Register */
+#define DMA2D_FGCOLR                    (volatile uint32_t *) (DMA2D_BASE + 0x20)               /* DMA2D Foreground Color Control Register */
+#define DMA2D_BGPFCCR                   (volatile uint32_t *) (DMA2D_BASE + 0x24)               /* DMA2D Background PFC Control Register */
+#define DMA2D_BGCOLR                    (volatile uint32_t *) (DMA2D_BASE + 0x28)               /* DMA2D Background Color Control Register */
+#define DMA2D_FGCMAR                    (volatile uint32_t *) (DMA2D_BASE + 0x2C)               /* DMA2D Foreground CLUT Memory Address Register */
+#define DMA2D_BGCMAR                    (volatile uint32_t *) (DMA2D_BASE + 0x30)               /* DMA2D Background CLUT Memory Address Register */
+#define DMA2D_OPFCCR                    (volatile uint32_t *) (DMA2D_BASE + 0x34)               /* DMA2D Output PFC Control Register */
+#define DMA2D_OCOLR                     (volatile uint32_t *) (DMA2D_BASE + 0x38)               /* DMA2D Output Color Register */
+#define DMA2D_OMAR                      (volatile uint32_t *) (DMA2D_BASE + 0x3C)               /* DMA2D Output Memory Address Register */
+#define DMA2D_OOR                       (volatile uint32_t *) (DMA2D_BASE + 0x40)               /* DMA2D Output Offset Register */
+#define DMA2D_NLR                       (volatile uint32_t *) (DMA2D_BASE + 0x44)               /* DMA2D Number of Line Register */
+#define DMA2D_LWR                       (volatile uint32_t *) (DMA2D_BASE + 0x48)               /* DMA2D Line Watermark Register */
+#define DMA2D_AMTCR                     (volatile uint32_t *) (DMA2D_BASE + 0x4C)               /* DMA2D AHB Master Timer Configuration Register */
 
 /* USB OTG Full-Speed */
 /* Global Control and Status Registers */
