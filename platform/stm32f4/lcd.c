@@ -5,6 +5,8 @@
 #include <platform/stm32f4/sdram.h>
 #include <platform/stm32f4/ltdc.h>
 
+static __USER_DATA sFONT *lcd_current_font;
+
 void __USER_TEXT lcd_init(void)
 {
 	struct ltdc_cfg ltdc_cfg;
@@ -368,4 +370,62 @@ void __USER_TEXT lcd_af_gpio_init(void)
 	gpio_init.pin = 12;
 	gpio_config(&gpio_init);
 
+}
+
+void __USER_TEXT lcd_layer_init(void)
+{
+	struct ltdc_layer_cfg layer_init;
+	
+	//Initialize Layer1
+	layer_init.horizontal_start = 30;
+	layer_init.horizontal_end = (LCD_PIXEL_WIDTH + 30 - 1);
+	layer_init.vertical_start = 4;
+	layer_init.vertical_end = (LCD_PIXEL_HEIGHT + 4 - 1);
+
+	layer_init.pixel_format = LTDC_Pixelformat_RGB565;
+	layer_init.constant_alpha = 255;
+
+	layer_init.default_blue = 0;
+	layer_init.default_green = 0;
+	layer_init.default_red = 0;
+	layer_init.default_alpha = 0;
+
+	layer_init.blending_factor1 = LTDC_BlendingFactor1_CA;
+	layer_init.blending_factor2 = LTDC_BlendingFactor2_CA;
+
+	layer_init.cfb_line_length = ((LCD_PIXEL_WIDTH * 2) + 3);
+	layer_init.cfb_pitch = (LCD_PIXEL_WIDTH * 2);
+	layer_init.cfb_line_number = LCD_PIXEL_HEIGHT;
+	layer_init.cfb_start_address = LCD_FRAME_BUFFER;
+	
+	ltdc_layer_cfg(LTDC_Layer1, &layer_init);
+
+	// Initialize Layer2 
+	layer_init.cfb_start_address = LCD_FRAME_BUFFER + BUFFER_OFFSET;
+	
+	layer_init.blending_factor1 = LTDC_BlendingFactor1_PAxCA;
+	layer_init.blending_factor2 = LTDC_BlendingFactor2_PAxCA;
+
+	ltdc_layer_cfg(LTDC_Layer2, &layer_init);
+
+	//ltdc configuration reload
+	ltdc_reload_cfg(LTDC_IMReload);
+
+	// Enable Layers
+	ltdc_layer_cmd(LTDC_Layer1, 1);
+	ltdc_layer_cmd(LTDC_Layer2, 1);
+
+	//ltdc configuration reload
+	ltdc_reload_cfg(LTDC_IMReload);
+
+	//set default font
+	lcd_set_font(&LCD_DEFAULT_FONT);
+
+	//dithering activation
+	ltdc_dither_cmd(1);
+}
+
+void __USER_TEXT lcd_set_font(sFONT *fonts)
+{
+	lcd_current_font = fonts;
 }

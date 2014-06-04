@@ -3,6 +3,7 @@
 
 #include <platform/link.h>
 #include <platform/stm32f4/registers.h>
+#include <platform/stm32f4/fonts.h>
 
 #define LCD_PIXEL_WIDTH     ((uint16_t)240)
 #define	LCD_PIXEL_HEIGHT    ((uint16_t)320)
@@ -31,6 +32,8 @@
 #define LCD_SPI                 SPI5_BASE
 #define LCD_SPI_CLK             RCC_APB2ENR_SPI5EN
 
+#define LCD_DEFAULT_FONT        Font16x24
+
 void lcd_init(void);
 void lcd_write_cmd(uint8_t lcdreg);
 void lcd_write_data(uint8_t value);
@@ -40,6 +43,8 @@ void lcd_ctrllines_write(uint8_t port, uint8_t pin, uint8_t reset);
 void lcd_ctrllines_init(void);
 void lcd_chipselect(uint8_t enable);
 void lcd_af_gpio_init(void);
+void lcd_layer_init(void);
+void lcd_set_font(sFONT *fonts);
 
 #endif
 

@@ -14,7 +14,8 @@ chip-y = \
 	nvic.o \
 	systick.o \
 	hwtimer.o \
-	mpu.o
+	mpu.o \
+	fonts.o
 
 loader-chip-y = \
 	gpio.loader.o \

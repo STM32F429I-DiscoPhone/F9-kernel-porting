@@ -1061,8 +1061,13 @@
 #define  RCC_DCKCFGR_TIMPRE             ((uint32_t)0x01000000)
 
 /* LTDC definition */
-#define LTDC_Layer1_BASE                (LTDC_BASE + 0x84)
-#define LTDC_Layer2_BASE                (LTDC_BASE + 0x104)
+#define LTDC_Layer_BASE(layer)          (LTDC_BASE + 0x84 + ((layer - 1) * 0x80))
+//#define LTDC_Layer1_BASE                (LTDC_BASE + 0x84)
+//#define LTDC_Layer2_BASE                (LTDC_BASE + 0x104)
+#define LTDC_Layer1                     1
+#define LTDC_Layer2                     2
+#define LTDC_Layer1_BASE                LTDC_Layer_BASE(LTDC_Layer1)
+#define LTDC_Layer2_BASE                LTDC_Layer_BASE(LTDC_Layer2)
 
 #define LTDC_SSCR                       (volatile uint32_t *) (LTDC_BASE + 0x08)                /* LTDC Synchronization Size Configuration Register */
 #define LTDC_BPCR                       (volatile uint32_t *) (LTDC_BASE + 0x0C)                /* LTDC Back Porch Configuration Register */
@@ -1132,6 +1137,16 @@
 #define LTDC_CDSR_VSYNCS                ((uint32_t) 1 << 2)                                    /* Vertical Synchronization Status */
 #define LTDC_CDSR_HSYNCS                ((uint32_t) 1 << 3)                                    /* Horizontal Synchronization Status */
 
-
+#define LTDC_Layer_CR(layer)            (volatile uint32_t *) (LTDC_Layer_BASE(layer) + 0x00)      /* Control Register */
+#define LTDC_Layer_WHPCR(layer)         (volatile uint32_t *) (LTDC_Layer_BASE(layer) + 0x04)      /* Window Horizontal Position Configuration Register */
+#define LTDC_Layer_WVPCR(layer)         (volatile uint32_t *) (LTDC_Layer_BASE(layer) + 0x08)      /* Window Vertical Position Configuration Register */
+#define LTDC_Layer_CKCR(layer)          (volatile uint32_t *) (LTDC_Layer_BASE(layer) + 0x0C)      /* Color Keying Configuration Register */
+#define LTDC_Layer_PFCR(layer)          (volatile uint32_t *) (LTDC_Layer_BASE(layer) + 0x10)      /* Pixel Format Configuration Register */
+#define LTDC_Layer_CACR(layer)          (volatile uint32_t *) (LTDC_Layer_BASE(layer) + 0x14)      /* Constant Alpha Configuration Register */
+#define LTDC_Layer_DCCR(layer)          (volatile uint32_t *) (LTDC_Layer_BASE(layer) + 0x18)      /* Default Color Configuration Register */
+#define LTDC_Layer_BFCR(layer)          (volatile uint32_t *) (LTDC_Layer_BASE(layer) + 0x1C)      /* Blending Factors Configuration Register */
+#define LTDC_Layer_CFBAR(layer)         (volatile uint32_t *) (LTDC_Layer_BASE(layer) + 0x28)      /* Color Frame Buffer Address Register */
+#define LTDC_Layer_CFBLR(layer)         (volatile uint32_t *) (LTDC_Layer_BASE(layer) + 0x2C)      /* Color Frame Buffer Length Register */
+#define LTDC_Layer_CFBLNR(layer)        (volatile uint32_t *) (LTDC_Layer_BASE(layer) + 0x30)      /* Color Frame Buffer Line Number Register */
 
 #endif

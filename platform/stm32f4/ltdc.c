@@ -44,3 +44,86 @@ void __USER_TEXT ltdc_init(struct ltdc_cfg *cfg)
 	*LTDC_BCCR &= ~(LTDC_BCCR_BCBLUE | LTDC_BCCR_BCGREEN | LTDC_BCCR_BCRED);
 	*LTDC_BCCR |= (backred | backgreen | cfg->bg_blue_value);
 }
+
+void __USER_TEXT ltdc_layer_cfg(uint32_t layerx, struct ltdc_layer_cfg *cfg)
+{
+	uint32_t whsppos = 0;
+	uint32_t wvsppos = 0;
+	uint32_t dcgreen = 0;
+	uint32_t dcred = 0;
+	uint32_t dcalpha = 0;
+	uint32_t cfbp = 0;
+
+	//TODO: assertion
+
+	//horizontal start and end position
+	whsppos = cfg->horizontal_end << 16;
+	*LTDC_Layer_WHPCR(layerx) &= ~(LTDC_LxWHPCR_WHSPOS | LTDC_LxWHPCR_WHEPOS);
+	*LTDC_Layer_WHPCR(layerx) = (cfg->horizontal_start | whsppos);
+
+	//vertical start and end position
+	wvsppos = cfg->vertical_end << 16;
+	*LTDC_Layer_WVPCR(layerx) &= ~(LTDC_LxWVPCR_WVSPOS | LTDC_LxWVPCR_WVEPOS);
+	*LTDC_Layer_WVPCR(layerx) = (cfg->vertical_start | wvsppos);
+
+	// pixel format
+	*LTDC_Layer_PFCR(layerx) &= ~(LTDC_LxPFCR_PF);
+	*LTDC_Layer_PFCR(layerx) = (cfg->pixel_format);
+
+	//default color
+	dcgreen = (cfg->default_green << 8);
+	dcred = (cfg->default_red << 16);
+	dcalpha = (cfg->default_alpha << 24);
+	*LTDC_Layer_DCCR(layerx) &= ~(LTDC_LxDCCR_DCBLUE | LTDC_LxDCCR_DCGREEN | LTDC_LxDCCR_DCRED | LTDC_LxDCCR_DCALPHA);
+	*LTDC_Layer_DCCR(layerx) = (cfg->default_blue | dcgreen | dcred | dcalpha);
+
+	//constant alpha value
+	*LTDC_Layer_CACR(layerx) &= ~(LTDC_LxCACR_CONSTA);
+	*LTDC_Layer_CACR(layerx) = (cfg->constant_alpha);
+
+	//blending factors
+	*LTDC_Layer_BFCR(layerx) &= ~(LTDC_LxBFCR_BF2 | LTDC_LxBFCR_BF1);
+	*LTDC_Layer_BFCR(layerx) = (cfg->blending_factor1 | cfg->blending_factor2);
+
+	//color frame buffer start address
+	*LTDC_Layer_CFBAR(layerx) &= ~(LTDC_LxCFBAR_CFBADD);
+	*LTDC_Layer_CFBAR(layerx) = (cfg->cfb_start_address);
+
+	//color frame buffer pitch in byte
+	cfbp = (cfg->cfb_pitch << 16);
+	*LTDC_Layer_CFBLR(layerx) &= ~(LTDC_LxCFBLR_CFBLL | LTDC_LxCFBLR_CFBP);
+	*LTDC_Layer_CFBLR(layerx) = (cfg->cfb_line_length | cfbp);
+
+	//color frame buffer line number
+	*LTDC_Layer_CFBLNR(layerx) &= ~(LTDC_LxCFBLNR_CFBLNBR);
+	*LTDC_Layer_CFBLNR(layerx) = (cfg->cfb_line_number);
+}
+
+void __USER_TEXT ltdc_reload_cfg(uint32_t reload)
+{
+	//TODO: assertion
+
+	*LTDC_SRCR = (uint32_t)reload;
+}
+
+void __USER_TEXT ltdc_layer_cmd(uint32_t layerx, uint8_t enable)
+{
+	//TODO: assertion
+
+	if (enable != 0) {
+		*LTDC_Layer_CR(layerx) |= (uint32_t)LTDC_LxCR_LEN;
+	} else {
+		*LTDC_Layer_CR(layerx) &= ~(uint32_t)LTDC_LxCR_LEN;
+	}
+}
+
+void __USER_TEXT ltdc_dither_cmd(uint8_t enable)
+{
+	//TODO: assertion
+
+	if (enable != 0) {
+		*LTDC_GCR |= (uint32_t)LTDC_GCR_DTEN;
+	} else {
+		*LTDC_GCR &= ~(uint32_t)LTDC_GCR_DTEN;
+	}
+}

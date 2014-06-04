@@ -21,6 +21,7 @@ static void __USER_TEXT main(user_struct *user)
     gpio_config_output(GPIOG, 13, GPIO_PUPDR_UP, GPIO_OSPEEDR_50M);
     gpio_config_output(GPIOG, 14, GPIO_PUPDR_UP, GPIO_OSPEEDR_50M);
 	lcd_init();
+	lcd_layer_init();
     while(1) {
 		flag = gpio_input_bit(GPIOA, 0);
 
