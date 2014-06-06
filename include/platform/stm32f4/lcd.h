@@ -71,5 +71,6 @@ void lcd_set_layer(uint32_t layerx);
 
 void lcd_clear(uint16_t color);
 void lcd_draw_line(uint16_t x, uint16_t y, uint16_t length, uint8_t direction);
+void lcd_draw_rect(uint16_t x, uint16_t y, uint16_t height, uint16_t width);
 #endif
 

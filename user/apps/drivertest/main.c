@@ -32,6 +32,9 @@ static void __USER_TEXT main(user_struct *user)
 	lcd_draw_line(37, 248, 71, LCD_DIR_VERTICAL);
 	lcd_set_text_color(LCD_COLOR_RED);
 	lcd_draw_line(0, 236, 240, LCD_DIR_HORIZONTAL);
+
+	lcd_set_text_color(LCD_COLOR_CYAN);
+	lcd_draw_rect(35, 20, 50, 30);
     while(1) {
 		flag = gpio_input_bit(GPIOA, 0);
 

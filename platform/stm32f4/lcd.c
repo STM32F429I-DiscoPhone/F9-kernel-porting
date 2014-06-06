@@ -520,3 +520,12 @@ void __USER_TEXT lcd_draw_line(uint16_t x, uint16_t y, uint16_t length, uint8_t 
 
 	while (dma2d_get_flagstatus(DMA2D_FLAG_TC) == 0) ;
 }
+
+void __USER_TEXT lcd_draw_rect(uint16_t x, uint16_t y, uint16_t height, uint16_t width)
+{
+	lcd_draw_line(x, y, width, LCD_DIR_HORIZONTAL);
+	lcd_draw_line(x, (y+height), width, LCD_DIR_HORIZONTAL);
+
+	lcd_draw_line(x, y, height, LCD_DIR_VERTICAL);
+	lcd_draw_line((x+width), y, height, LCD_DIR_VERTICAL);
+}
