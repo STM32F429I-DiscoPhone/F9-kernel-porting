@@ -1063,11 +1063,11 @@
 
 #define FMC_Bank5_6_R_BASE              (FMC_R_BASE + 0x0140)
 
-#define FMC_Bank5_6_SDCR(n)             (volatile uint32_t *) (FMC_Bank5_6_R_BASE + 0x140 + (4*n))      /* SDRAM Control Register */
-#define FMC_Bank5_6_SDTR(n)             (volatile uint32_t *) (FMC_Bank5_6_R_BASE + 0x148 + (4*n))      /* SDRAM Timing Register */
-#define FMC_Bank5_6_SDCMR               (volatile uint32_t *) (FMC_Bank5_6_R_BASE + 0x150)      /* SDRAM Command Mode Register */
-#define FMC_Bank5_6_SDRTR               (volatile uint32_t *) (FMC_Bank5_6_R_BASE + 0x154)      /* SDRAM Refresh Timer Register */
-#define FMC_Bank5_6_SDSR                (volatile uint32_t *) (FMC_Bank5_6_R_BASE + 0x158)      /* SDRAM Status Register */
+#define FMC_Bank5_6_SDCR(n)             (volatile uint32_t *) (FMC_Bank5_6_R_BASE + 0x00 + (4*n))      /* SDRAM Control Register */
+#define FMC_Bank5_6_SDTR(n)             (volatile uint32_t *) (FMC_Bank5_6_R_BASE + 0x08 + (4*n))      /* SDRAM Timing Register */
+#define FMC_Bank5_6_SDCMR               (volatile uint32_t *) (FMC_Bank5_6_R_BASE + 0x10)      /* SDRAM Command Mode Register */
+#define FMC_Bank5_6_SDRTR               (volatile uint32_t *) (FMC_Bank5_6_R_BASE + 0x14)      /* SDRAM Refresh Timer Register */
+#define FMC_Bank5_6_SDSR                (volatile uint32_t *) (FMC_Bank5_6_R_BASE + 0x18)      /* SDRAM Status Register */
 
 /* RCC_PLL_Clock definition */
 #define RCC_PLLSAIDivR_Div2             ((uint32_t)0x00000000)
