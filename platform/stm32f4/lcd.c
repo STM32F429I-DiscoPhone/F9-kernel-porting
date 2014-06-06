@@ -529,3 +529,36 @@ void __USER_TEXT lcd_draw_rect(uint16_t x, uint16_t y, uint16_t height, uint16_t
 	lcd_draw_line(x, y, height, LCD_DIR_VERTICAL);
 	lcd_draw_line((x+width), y, height, LCD_DIR_VERTICAL);
 }
+
+void __USER_TEXT lcd_fill_rect(uint16_t x, uint16_t y, uint16_t height, uint16_t width)
+{
+	struct dma2d_cfg dma2d_init;
+	
+	uint32_t Xaddr = 0;
+	uint16_t red = 0, green = 0, blue = 0;
+	
+	Xaddr = current_frame_buffer + 2*(LCD_PIXEL_WIDTH*y + x);
+
+	red = (0xF800 & current_Tcolor) >> 11;
+	blue = 0x001F & current_Tcolor;
+	green = (0x07E0 & current_Tcolor) >> 5;
+	
+	dma2d_deinit();
+	dma2d_init.mode = DMA2D_R2M;
+	dma2d_init.cmode = DMA2D_RGB565;
+	dma2d_init.output_green = green;
+	dma2d_init.output_blue = blue;
+	dma2d_init.output_red = red;
+	dma2d_init.output_alpha = 0x0F;
+	dma2d_init.output_memory_address = Xaddr;
+	dma2d_init.output_offset = (LCD_PIXEL_WIDTH - width);
+	dma2d_init.number_of_line = height;
+	dma2d_init.pixel_per_line = width;
+	dma2d_cfg(&dma2d_init);
+
+	dma2d_start_transfer();
+
+	while (dma2d_get_flagstatus(DMA2D_FLAG_TC) == 0) ;
+
+	lcd_set_text_color(current_Tcolor);
+}
