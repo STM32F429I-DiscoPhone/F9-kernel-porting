@@ -126,6 +126,7 @@ struct ltdc_layer_cfg {
 void ltdc_init(struct ltdc_cfg *cfg);
 void ltdc_layer_cfg(uint32_t layerx, struct ltdc_layer_cfg *cfg);
 void ltdc_reload_cfg(uint32_t reload);
+void ltdc_cmd(uint8_t enable);
 void ltdc_layer_cmd(uint32_t layerx, uint8_t enable);
 void ltdc_dither_cmd(uint8_t enable);
 #endif

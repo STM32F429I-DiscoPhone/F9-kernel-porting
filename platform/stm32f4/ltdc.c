@@ -106,6 +106,16 @@ void __USER_TEXT ltdc_reload_cfg(uint32_t reload)
 	*LTDC_SRCR = (uint32_t)reload;
 }
 
+void __USER_TEXT ltdc_cmd(uint8_t enable) 
+{
+	
+	if (enable != 0) {
+		*LTDC_GCR |= (uint32_t)LTDC_GCR_LTDCEN;
+	} else {
+		*LTDC_GCR &= ~(uint32_t)LTDC_GCR_LTDCEN;
+	}
+}
+
 void __USER_TEXT ltdc_layer_cmd(uint32_t layerx, uint8_t enable)
 {
 	//TODO: assertion

@@ -57,6 +57,7 @@ void lcd_init(void);
 void lcd_write_cmd(uint8_t lcdreg);
 void lcd_write_data(uint8_t value);
 void lcd_poweron(void);
+void lcd_display_off(void);
 void lcd_spi_config(void);
 void lcd_ctrllines_write(uint8_t port, uint8_t pin, uint8_t reset);
 void lcd_ctrllines_init(void);
@@ -66,6 +67,7 @@ void lcd_layer_init(void);
 void lcd_set_font(sFONT *fonts);
 void lcd_set_text_color(uint16_t color);
 void lcd_set_back_color(uint16_t color);
+void lcd_set_layer(uint32_t layerx);
 
 void lcd_clear(uint16_t color);
 void lcd_draw_line(uint16_t x, uint16_t y, uint16_t length, uint8_t direction);

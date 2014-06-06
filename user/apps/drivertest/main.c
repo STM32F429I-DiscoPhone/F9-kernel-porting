@@ -11,6 +11,7 @@
 #include <platform/stm32f4/gpio.h>
 #include <platform/stm32f4/rcc.h>
 #include <platform/stm32f4/lcd.h>
+#include <platform/stm32f4/ltdc.h>
 #define STACK_SIZE 256
 
 static void __USER_TEXT main(user_struct *user)
@@ -22,8 +23,15 @@ static void __USER_TEXT main(user_struct *user)
     gpio_config_output(GPIOG, 14, GPIO_PUPDR_UP, GPIO_OSPEEDR_50M);
 	lcd_init();
 	lcd_layer_init();
-
-	lcd_clear(LCD_COLOR_RED);
+	ltdc_layer_cmd(LTDC_Layer1, 1);
+	ltdc_layer_cmd(LTDC_Layer2, 1);
+	ltdc_reload_cfg(LTDC_IMReload);
+	ltdc_cmd(1);
+	lcd_set_layer(LCD_FOREGROUND_LAYER);
+	lcd_clear(LCD_COLOR_BLUE);
+	lcd_draw_line(37, 248, 71, LCD_DIR_VERTICAL);
+	lcd_set_text_color(LCD_COLOR_RED);
+	lcd_draw_line(0, 236, 240, LCD_DIR_HORIZONTAL);
     while(1) {
 		flag = gpio_input_bit(GPIOA, 0);
 
@@ -48,8 +56,10 @@ DECLARE_USER(
 //	DECLARE_FPAGE(0x40010000, 0x3c00)
 	DECLARE_FPAGE(0x40015000, 0x0c00)
 	DECLARE_FPAGE(0x40020000, 0x3c00)
+	DECLARE_FPAGE(0x40028000, 0x8000)
 	DECLARE_FPAGE(0x42470000, 0x0c00)
 	DECLARE_FPAGE(0x40016800, 0x0c00)
 	DECLARE_FPAGE(0xA0000000, 0x1000)
-	DECLARE_FPAGE(0xD0000000, 0x1000)
+	DECLARE_FPAGE(0xD0000000, 0xA0000)
+	DECLARE_FPAGE(0xD00A0000, 0xA0000)
 );

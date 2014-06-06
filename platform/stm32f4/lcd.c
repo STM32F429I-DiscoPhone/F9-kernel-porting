@@ -9,7 +9,7 @@
 static __USER_DATA sFONT *lcd_current_font;
 static __USER_DATA uint16_t current_Tcolor = 0x0000;
 static __USER_DATA uint16_t current_Bcolor = 0xFFFF;
-//static __USER_DATA uint32_t current_layer = LCD_BACKGROUND_LAYER;
+static __USER_DATA uint32_t current_layer = LCD_BACKGROUND_LAYER;
 static __USER_DATA uint32_t current_frame_buffer = LCD_FRAME_BUFFER;
 
 void __USER_TEXT lcd_init(void)
@@ -461,6 +461,17 @@ void __USER_TEXT lcd_set_text_color(uint16_t color)
 void __USER_TEXT lcd_set_back_color(uint16_t color)
 {
 	current_Bcolor = color;
+}
+
+void __USER_TEXT lcd_set_layer(uint32_t layerx)
+{
+	if (layerx == LCD_BACKGROUND_LAYER) {
+		current_frame_buffer = LCD_FRAME_BUFFER;
+		current_layer = LCD_BACKGROUND_LAYER;
+	} else {
+		current_frame_buffer = LCD_FRAME_BUFFER + BUFFER_OFFSET;
+		current_layer = LCD_FOREGROUND_LAYER;
+	}
 }
 
 void __USER_TEXT lcd_clear(uint16_t color)
