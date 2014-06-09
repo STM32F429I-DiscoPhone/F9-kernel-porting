@@ -35,6 +35,7 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include <stdint.h>
+#include <platform/link.h>
 
 /** @addtogroup Utilities
   * @{
@@ -63,10 +64,8 @@ typedef struct _tFont
   
 } sFONT;
 
-extern sFONT Font16x24;
-extern sFONT Font12x12;
-extern sFONT Font8x12;
-extern sFONT Font8x8;
+extern sFONT Font16x24, Font12x12, Font8x12, Font8x8;
+
 
 /**
   * @}
@@ -95,6 +94,7 @@ extern sFONT Font8x8;
   * @}
   */
 
+void font_init(void);
 #ifdef __cplusplus
 }
 #endif
