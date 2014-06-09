@@ -37,6 +37,10 @@ static void __USER_TEXT main(user_struct *user)
 	lcd_draw_rect(35, 20, 50, 30);
 
 	lcd_fill_rect(80, 20, 50, 30);
+	lcd_set_text_color(LCD_COLOR_BLACK);
+	lcd_print_char(40, 20, 'a');
+
+	//lcd_print_str(20, 210,(uint8_t *)"DEMO");
     while(1) {
 		flag = gpio_input_bit(GPIOA, 0);
 

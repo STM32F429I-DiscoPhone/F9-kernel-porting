@@ -59,6 +59,7 @@ void __USER_TEXT lcd_init(void)
 	ltdc_cfg.total_height = 327;
 
 	ltdc_init(&ltdc_cfg);
+	font_init();
 }
 
 void __USER_TEXT lcd_write_cmd(uint8_t lcdreg)
@@ -561,4 +562,40 @@ void __USER_TEXT lcd_fill_rect(uint16_t x, uint16_t y, uint16_t height, uint16_t
 	while (dma2d_get_flagstatus(DMA2D_FLAG_TC) == 0) ;
 
 	lcd_set_text_color(current_Tcolor);
+}
+
+void __USER_TEXT lcd_draw_char(uint16_t x, uint16_t y, const uint16_t *c)
+{
+	uint32_t index = 0, counter = 0, ypos = 0;
+	uint32_t Xaddr = 0;
+
+	ypos = y * LCD_PIXEL_WIDTH * 2;
+	Xaddr += x;
+
+	for (index = 0; index < lcd_current_font->Height; index++) {
+		for (counter = 0; counter < lcd_current_font->Width; counter++) {
+			if ((((c[index] & ((0x80 << ((lcd_current_font->Width / 12) * 8 )) >> counter)) == 0x00) && (lcd_current_font->Width <= 12)) ||
+			   (((c[index] & (0x1 << counter)) == 0x00) && (lcd_current_font->Width > 12))) {
+				*(volatile uint16_t *) (current_frame_buffer + (2*Xaddr) + ypos) = current_Bcolor;
+			} else {
+				*(volatile uint16_t *) (current_frame_buffer + (2*Xaddr) + ypos) = current_Tcolor;
+			}
+			Xaddr++;
+		}
+		Xaddr += (LCD_PIXEL_WIDTH - lcd_current_font->Width);
+	}
+}
+
+void __USER_TEXT lcd_print_char(uint16_t column, uint16_t line, uint8_t ascii)
+{
+	ascii -= 32;
+	lcd_draw_char(column, line, &lcd_current_font->table[ascii * lcd_current_font->Height]);
+}
+
+void __USER_TEXT lcd_print_str(uint16_t x, uint16_t y, uint8_t *ptr) 
+{
+	while (((x + lcd_current_font->Width) < LCD_PIXEL_WIDTH) && (*ptr != 0)) {
+		lcd_print_char(x, y, *ptr);
+		x += lcd_current_font->Width;
+	}
 }

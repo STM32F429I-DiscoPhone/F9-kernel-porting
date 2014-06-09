@@ -73,5 +73,9 @@ void lcd_clear(uint16_t color);
 void lcd_draw_line(uint16_t x, uint16_t y, uint16_t length, uint8_t direction);
 void lcd_draw_rect(uint16_t x, uint16_t y, uint16_t height, uint16_t width);
 void lcd_fill_rect(uint16_t x, uint16_t y, uint16_t height, uint16_t width);
+
+void lcd_draw_char(uint16_t x, uint16_t y, const uint16_t *c);
+void lcd_print_char(uint16_t column, uint16_t line, uint8_t ascii);
+void lcd_print_str(uint16_t x, uint16_t y, uint8_t *ptr);
 #endif
 
