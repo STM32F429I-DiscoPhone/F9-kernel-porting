@@ -337,3 +337,11 @@ uint8_t __USER_TEXT ioe_timeout_user_callback(void)
 	
 	return 0;
 }
+
+uint16_t __USER_TEXT ioe_tp_get_state(void)
+{
+	uint16_t status;
+
+	status = (i2c_read_device_reg(IOE_REG_TP_CTRL) & 0x80);
+	return status;
+}

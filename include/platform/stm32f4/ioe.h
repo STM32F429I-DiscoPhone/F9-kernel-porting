@@ -110,4 +110,5 @@ uint16_t ioe_read_id(void);
 uint8_t i2c_read_device_reg(uint8_t addr);
 uint8_t i2c_write_device_reg(uint8_t addr, uint8_t value);
 uint8_t ioe_timeout_user_callback(void);
+uint16_t ioe_tp_get_state(void);
 #endif

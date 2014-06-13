@@ -33,7 +33,7 @@ struct i2c_cfg {
 #define I2C_AcknowledgedAddress_10bit   ((uint16_t)0xC000)
 
 // i2c speed
-#define I2C_SPEED                       ( 1 << 20 )
+#define I2C_SPEED                       100000
 
 // direction
 #define  I2C_Direction_Transmitter      ((uint8_t)0x00)

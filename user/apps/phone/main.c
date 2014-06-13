@@ -12,6 +12,7 @@
 #include <platform/stm32f4/rcc.h>
 #include <platform/stm32f4/lcd.h>
 #include <platform/stm32f4/ltdc.h>
+#include <platform/stm32f4/ioe.h>
 #include <platform/stm32f4/fonts.h>
 #define STACK_SIZE 256
 
@@ -44,6 +45,7 @@ static void __USER_TEXT main(user_struct *user)
 
 	uint32_t xpos, ypos, btn_height, btn_width;
     gpio_config_output(GPIOG, 13, GPIO_PUPDR_UP, GPIO_OSPEEDR_50M);
+    gpio_config_output(GPIOG, 14, GPIO_PUPDR_UP, GPIO_OSPEEDR_50M);
 	lcd_init();
 	lcd_layer_init();
 	ltdc_layer_cmd(LTDC_Layer1, 1);
@@ -110,10 +112,15 @@ static void __USER_TEXT main(user_struct *user)
 	
 	btn_one = btn_two = btn_three = btn_four = btn_five = btn_six = btn_seven = btn_eight = btn_nine = btn_asterik = btn_zero = btn_hash; // To cancel warning
 	btn_two = btn_one;
-
- 	gpio_out_high(GPIOG, 13);
+	
+	if (ioe_init() == IOE_OK)
+	 	gpio_out_high(GPIOG, 13);
+	 
     while(1) {
-        L4_Sleep(L4_Never);
+		if (ioe_tp_get_state())
+			gpio_out_high(GPIOG, 14);
+
+        //L4_Sleep(L4_Never);
     }
 }
 
@@ -122,6 +129,7 @@ DECLARE_USER(
 	phoneui,
 	main,
 	DECLARE_FPAGE(0x0, UTCB_SIZE + STACK_SIZE)
+	DECLARE_FPAGE(0x40005000, 0x1000)
 	DECLARE_FPAGE(0x40015000, 0x0c00)
 	DECLARE_FPAGE(0x40020000, 0x3c00)
 	DECLARE_FPAGE(0x40028000, 0x8000)
