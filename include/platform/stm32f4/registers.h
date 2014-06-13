@@ -137,6 +137,7 @@
 #define SPI_I2SPR(port)                 (volatile uint32_t *) (SPI_BASE(port) + 0x20)           /* SPI I2C prescaler register */
 
 /* I2C */
+#define I2C_BASE(port)                  (port)                                                  /* I2C Base */
 #define I2C_CR1(port)                   (volatile uint32_t *) (I2C_BASE(port) + 0x00)           /* I2C control register 1 */
 #define I2C_CR2(port)                   (volatile uint32_t *) (I2C_BASE(port) + 0x04)           /* I2C control register 2 */
 #define I2C_OAR1(port)                  (volatile uint32_t *) (I2C_BASE(port) + 0x08)           /* I2C own address register 1 */
@@ -174,6 +175,7 @@
 #define RCC_CFGR                        (volatile uint32_t *) (RCC_BASE + 0x08)                 /* Clock Configuration Register */
 #define RCC_CIR                         (volatile uint32_t *) (RCC_BASE + 0x0C)                 /* Clock Interrupt Register */
 #define RCC_AHB1RSTR                    (volatile uint32_t *) (RCC_BASE + 0x10)                 /* AHB1 reset Register */
+#define RCC_APB1RSTR                    (volatile uint32_t *) (RCC_BASE + 0x20)                 /* APB1 reset Register */
 #define RCC_APB2RSTR                    (volatile uint32_t *) (RCC_BASE + 0x24)                 /* APB2 reset Register */
 #define RCC_AHB1ENR                     (volatile uint32_t *) (RCC_BASE + 0x30)                 /* AHB1 Enable Register */
 #define RCC_AHB2ENR                     (volatile uint32_t *) (RCC_BASE + 0x34)                 /* AHB2 Enable Register */
@@ -348,6 +350,9 @@
 /* Bit Masks - See RM0090 Reference Manual for STM32F4 for details */
 #define PWR_CR_VOS                      (uint16_t) (1 << 14)                                    /* Regulator voltage scaling output selection */
 
+#define HSI_VALUE                       (uint32_t) (16000000)                                   /* HSI value in Hz */
+#define HSE_VALUE                       (uint32_t) (8000000)                                    /* HSE value in Hz */
+
 #define RCC_CR_HSION                    (uint32_t) (1 << 0)                                     /* HSI clock enable */
 #define RCC_CR_HSIRDY                   (uint32_t) (1 << 1)                                     /* HSI ready */
 #define RCC_CR_HSITRIM_M                (uint32_t) (0x1F << 3)                                  /* HSI trimming mask */
@@ -364,6 +369,9 @@
 
 #define RCC_PLLCFGR_RESET               (uint32_t) (0x24003010)                                 /* PLLCFGR register reset value */
 #define RCC_PLLCFGR_PLLSRC_HSE          (uint32_t) (1 << 22)                                    /* HSE oscillator selected as clock entry */
+#define RCC_PLLCFGR_PLLM                (uint32_t) (0x003F)
+#define RCC_PLLCFGR_PLLN                (uint32_t) (0x7FC0)
+#define RCC_PLLCFGR_PLLP                (uint32_t) (0x00030000)
 
 #define RCC_CFGR_SW_M                   (uint32_t) (3 << 0)                                     /* System clock switch mask */
 #define RCC_CFGR_SW_HSI                 (uint32_t) (0 << 0)                                     /* System clock switch - HSI selected as system clock */
@@ -620,6 +628,7 @@
 #define I2C_CR1_ALERT                   (uint32_t) (1 << 13)                                    /* I2C SMBus alert */
 #define I2C_CR1_SWRST                   (uint32_t) (1 << 15)                                    /* I2C software reset */
 
+#define I2C_CR2_FREQ_ALL                (uint32_t) (0x003F)                                     /* FREQ[5:0] bits */
 #define I2C_CR2_FREQ(n)                 (uint32_t) (n << 0)                                     /* I2C clock frequency */
 #define I2C_CR2_ITERREN                 (uint32_t) (1 << 8)                                     /* I2C error interrupt enable */
 #define I2C_CR2_ITEVTEN                 (uint32_t) (1 << 9)                                     /* I2C event interrupt enable */
@@ -627,6 +636,7 @@
 #define I2C_CR2_DMAEN                   (uint32_t) (1 << 11)                                    /* I2C DMA requests enable */
 #define I2C_CR2_LAST                    (uint32_t) (1 << 12)                                    /* I2C DMA last transfer */
 
+#define I2C_OAR1_ADD(n)                 (uint16_t) (1 << n)                                     /* I2C interface address */
 #define I2C_OAR1_ADD10(n)               (uint32_t) (n << 0)                                     /* I2C interface address (10-bit) */
 #define I2C_OAR1_ADD7(n)                (uint32_t) (n << 1)                                     /* I2C interface address (7-bit) */
 #define I2C_OAR1_ADDMODE                (uint32_t) (1 << 15)                                    /* I2C interface address mode (1=10-bit) */

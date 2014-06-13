@@ -11,6 +11,8 @@ chip-y = \
 	fmc.o \
 	ltdc.o \
 	dma2d.o \
+	i2c.o \
+	ioe.o \
 	usart.o \
 	nvic.o \
 	systick.o \

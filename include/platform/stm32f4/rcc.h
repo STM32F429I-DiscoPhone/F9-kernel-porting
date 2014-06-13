@@ -1,6 +1,14 @@
 #ifndef PLATFORM_STM32F4_RCC_H__
 #define PLATFORM_STM32F4_RCC_H__
 
+#include <platform/stm32f4/registers.h>
+struct rcc_clocks {
+	uint32_t sysclk_freq;
+	uint32_t hclk_freq;
+	uint32_t pclk1_freq;
+	uint32_t pclk2_freq;
+};
+
 /* RCC_FLAG definition */
 #define RCC_FLAG_HSIRDY                  ((uint8_t)0x21)
 #define RCC_FLAG_HSERDY                  ((uint8_t)0x31)
@@ -21,11 +29,14 @@ void sys_clock_init(void);
 void RCC_AHB1PeriphClockCmd(uint32_t rcc_AHB1, uint8_t enable);
 void RCC_AHB1PeriphResetCmd(uint32_t rcc_AHB1, uint8_t enable);
 void RCC_AHB3PeriphClockCmd(uint32_t rcc_AHB3, uint8_t enable);
+void RCC_APB1PeriphClockCmd(uint32_t rcc_APB1, uint8_t enable);
+void RCC_APB1PeriphResetCmd(uint32_t rcc_APB1, uint8_t enable);
 void RCC_APB2PeriphClockCmd(uint32_t rcc_APB2, uint8_t enable);
 void RCC_APB2PeriphResetCmd(uint32_t rcc_APB2, uint8_t enable);
 void RCC_PLLSAIConfig(uint32_t pllsain, uint32_t pllsaiq, uint32_t pllsair);
 void RCC_LTDCCLKDivConfig(uint32_t div);
 void RCC_PLLSAICmd(uint32_t enable);
 uint8_t RCC_GetFlagStatus(uint8_t flag);
+void RCC_GetClocksFreq(struct rcc_clocks* clock);
 
 #endif

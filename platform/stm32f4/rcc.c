@@ -2,8 +2,7 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
-
-#include <platform/stm32f4/registers.h>
+#include <platform/stm32f4/rcc.h>
 #include <platform/cortex_m.h>
 #include <error.h>
 
@@ -25,6 +24,8 @@
 /* Alias word address of PLLSAION bit */
 #define PLLSAION_BitNumber      0x1C
 #define CR_PLLSAION_BB          (PERIPH_BB_BASE + (CR_OFFSET * 32) + (PLLSAION_BitNumber * 4))
+
+static __USER_DATA uint8_t APBAHBPrescTable[16] = {0, 0, 0, 0, 1, 2, 3, 4, 1, 2, 3, 4, 6, 7, 8, 9};
 
 void sys_clock_init(void)
 {
@@ -167,6 +168,28 @@ void __USER_TEXT RCC_AHB3PeriphClockCmd(uint32_t rcc_AHB3, uint8_t enable)
 	}
 }
 
+void __USER_TEXT RCC_APB1PeriphClockCmd(uint32_t rcc_APB1, uint8_t enable)
+{
+	//TODO: assertion
+
+	if (enable != 0) {
+		*RCC_APB1ENR |= rcc_APB1;
+	} else {
+		*RCC_APB1ENR &= ~rcc_APB1;
+	}
+}
+
+void __USER_TEXT RCC_APB1PeriphResetCmd(uint32_t rcc_APB1, uint8_t enable)
+{
+	//TODO: assertion
+
+	if (enable != 0) {
+        *RCC_APB1RSTR |= rcc_APB1;
+	} else {
+		*RCC_APB1RSTR &= ~rcc_APB1;
+	}
+}
+
 void __USER_TEXT RCC_APB2PeriphClockCmd(uint32_t rcc_APB2, uint8_t enable)
 {
 	//TODO: assertion
@@ -243,4 +266,54 @@ uint8_t __USER_TEXT RCC_GetFlagStatus(uint8_t flag)
 	}
 	
 	return bitstatus;
+}
+
+void __USER_TEXT RCC_GetClocksFreq(struct rcc_clocks *clock)
+{
+	uint32_t tmp = 0, presc = 0, pllvco = 0, pllp = 2, pllsource = 0, pllm = 2;
+
+	tmp = *RCC_CFGR & RCC_CFGR_SWS_M;
+
+	switch (tmp) {
+		case 0x00:
+			clock->sysclk_freq = HSI_VALUE;
+			break;
+		case 0x04:
+			clock->sysclk_freq = HSE_VALUE;
+			break;
+		case 0x08:
+			pllsource = (*RCC_PLLCFGR & RCC_PLLCFGR_PLLSRC_HSE) >> 22;
+			pllm = *RCC_PLLCFGR & RCC_PLLCFGR_PLLM;
+
+			if (pllsource != 0) {
+				pllvco = (HSE_VALUE / pllm) * ((*RCC_PLLCFGR & RCC_PLLCFGR_PLLN) >> 6);
+			} else {
+				pllvco = (HSI_VALUE / pllm) * ((*RCC_PLLCFGR & RCC_PLLCFGR_PLLN) >> 6);
+			}
+
+			pllp = (((*RCC_PLLCFGR & RCC_PLLCFGR_PLLP) >> 16) + 1 ) *2;
+			clock->sysclk_freq = pllvco/pllp;
+			break;
+		default:
+			clock->sysclk_freq = HSI_VALUE;
+			break;
+	}
+
+	tmp = *RCC_CFGR & RCC_CFGR_HPRE_M;
+	tmp = tmp >> 4;
+	presc = APBAHBPrescTable[tmp];
+
+	clock->hclk_freq = clock->sysclk_freq >> presc;
+
+	tmp = *RCC_CFGR & RCC_CFGR_PPRE1_M;
+	tmp = tmp >> 10;
+	presc = APBAHBPrescTable[tmp];
+
+	clock->pclk1_freq = clock->hclk_freq >> presc;
+
+	tmp = *RCC_CFGR & RCC_CFGR_PPRE2_M;
+	tmp = tmp >> 13;
+	presc = APBAHBPrescTable[tmp];
+
+	clock->pclk2_freq = clock->hclk_freq >> presc;
 }
