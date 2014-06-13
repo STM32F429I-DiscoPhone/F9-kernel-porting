@@ -5,6 +5,7 @@
 
 #include <platform/stm32f4/usart.h>
 #include <platform/stm32f4/gpio.h>
+#include <platform/link.h>
 
 struct usart_regs {
 	volatile uint16_t SR;
@@ -25,12 +26,12 @@ struct usart_regs {
 
 /* Calculates the value for the USART_BRR */
 /* TODO: Need more precise algorithm */
-static int16_t usart_baud(uint32_t base, uint32_t baud)
+static __USER_TEXT int16_t usart_baud(uint32_t base, uint32_t baud)
 {
 	uint16_t mantissa;
 	uint16_t fraction;
 
-	if ((base == USART1_BASE) || (base == USART2_BASE)) {
+	if ((base == USART1_BASE)) {
 		mantissa = (84000000) / (16 *  baud);
 		fraction = (84000000 / baud) % 16;
 	} else {
@@ -41,7 +42,7 @@ static int16_t usart_baud(uint32_t base, uint32_t baud)
 	return (mantissa << 4) | fraction;
 }
 
-void usart_config_interrupt(struct usart_dev *usart, uint16_t it,
+void __USER_TEXT  usart_config_interrupt(struct usart_dev *usart, uint16_t it,
                             uint8_t state)
 {
 	uint32_t it_reg, it_bit;
@@ -58,7 +59,7 @@ void usart_config_interrupt(struct usart_dev *usart, uint16_t it,
 		*(volatile uint32_t *) it_reg &= ~it_bit;
 }
 
-int usart_interrupt_status(struct usart_dev *usart, uint16_t it)
+int __USER_TEXT usart_interrupt_status(struct usart_dev *usart, uint16_t it)
 {
 	uint32_t it_reg, it_bit;
 
@@ -71,7 +72,7 @@ int usart_interrupt_status(struct usart_dev *usart, uint16_t it)
 	return (*(volatile uint32_t *) it_reg & it_bit);
 }
 
-int usart_status(struct usart_dev *usart, uint16_t st)
+int __USER_TEXT usart_status(struct usart_dev *usart, uint16_t st)
 {
 	struct usart_regs *uregs;
 
@@ -80,7 +81,7 @@ int usart_status(struct usart_dev *usart, uint16_t st)
 	return (uregs->SR & st);
 }
 
-uint8_t usart_getc(struct usart_dev *usart)
+uint8_t __USER_TEXT usart_getc(struct usart_dev *usart)
 {
 	struct usart_regs *uregs;
 
@@ -88,7 +89,7 @@ uint8_t usart_getc(struct usart_dev *usart)
 	return (uregs->DR & 0xff);
 }
 
-void usart_putc(struct usart_dev *usart, uint8_t c)
+void __USER_TEXT usart_putc(struct usart_dev *usart, uint8_t c)
 {
 	struct usart_regs *uregs;
 
@@ -96,7 +97,7 @@ void usart_putc(struct usart_dev *usart, uint8_t c)
 	uregs->DR = c;
 }
 
-void usart_init(struct usart_dev *usart)
+void __USER_TEXT usart_init(struct usart_dev *usart)
 {
 	struct usart_regs *uregs;
 
